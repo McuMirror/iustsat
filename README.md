@@ -1,9 +1,1 @@
-title: The IUSTSAT OOT Module
-brief: Short description of gr-iustsat
-tags:
-  - sdr
-  - satellite
-  - ccsds
-  - ecss
-author:
-  - Armin Ghani (IUST)
+OOT module for IUST Research Center project of GNU-Radio.
