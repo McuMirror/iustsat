@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<block>
+  <name>pdu_debug</name>
+  <key>iustsat_pdu_debug</key>
+  <category>[iustsat]</category>
+  <import>import iustsat</import>
+  <make>iustsat.pdu_debug($meta_tag_key)</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Meta Tag Key</name>
+    <key>meta_tag_key</key>
+    <type>string</type>
+  </param>
+
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>pdu_in</name>
+    <type>message</type>
+  </sink>
+
+
+
+</block>
