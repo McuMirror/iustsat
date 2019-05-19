@@ -40,7 +40,7 @@ list(APPEND iustsat_sources
     pdu_to_message_impl.cc
     zafar_telemetry_deinterleave_impl.cc
     pack_rsblock_impl.cc
-    )
+    vt_to_decrypt_impl.cc )
 
 set(iustsat_sources "${iustsat_sources}" PARENT_SCOPE)
 if(NOT iustsat_sources)

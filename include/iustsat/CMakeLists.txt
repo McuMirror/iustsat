@@ -37,5 +37,5 @@ install(FILES
     pdu_to_message.h
     zafar_telemetry_deinterleave.h
     pack_rsblock.h
-    DESTINATION include/iustsat
+    vt_to_decrypt.h DESTINATION include/iustsat
 )

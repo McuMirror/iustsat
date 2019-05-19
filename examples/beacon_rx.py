@@ -81,7 +81,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.ss_ted_gain_range = ss_ted_gain_range = 100
         self.ss_loopbw_range = ss_loopbw_range = 0.2
         self.ss_damping_factor_range = ss_damping_factor_range = 0.5
-        self.source_option = source_option = 1
+        self.source_option = source_option = 0
         self.rrc_dec = rrc_dec = 10
         self.pll_loopbw_range = pll_loopbw_range = 0.15
         self.gain_before_tr = gain_before_tr = 30
@@ -458,7 +458,9 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         	1, symb_rate*samp_per_symb*sec_dec, channel_bw, channel_bw/filt_sharp, firdes.WIN_HAMMING, 6.76))
         self.iustsat_zafar_telemetry_frame_extractor_1 = iustsat.zafar_telemetry_frame_extractor("pkt_len")
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
-        self.iustsat_synch_detect_tag_1 = iustsat.synch_detect_tag(62,'pkt_len',90*2*8)
+        self.iustsat_vt_to_decrypt_0 = iustsat.vt_to_decrypt('iv', ([0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xCE, 0xDB, 0xAD, 0xDE, 0xCA, 0xF8, 0x88]), 'aad', 'auth_tag')
+        self.iustsat_synch_detect_tag_1 = iustsat.synch_detect_tag(60,'pkt_len',93*2*8)
+        self.iustsat_pdu_debug_2_0_0 = iustsat.pdu_debug_2('aad', 'auth_tag')
         self.iio_fmcomms2_source_0 = iio.fmcomms2_source_f32c('192.168.1.10', ad9361_lo_freq-(f_if+doppler), ad_samp_rate, ad_channel_bw, True, False, 0x8000, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
         self.fir_filter_xxx_0 = filter.fir_filter_fff(1, ([1,1,1,-1,1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,-1,-1,-1,1,1,1,1,1,1,1,1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,1,1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,-1,1,-1,1,1,1,-1,-1,-1,-1,-1,-1]))
         self.fir_filter_xxx_0.declare_sample_delay(0)
@@ -471,11 +473,10 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.blocks_tag_gate_0.set_single_key("")
         self.blocks_multiply_const_vxx_2_0 = blocks.multiply_const_vcc((source_option, ))
         self.blocks_multiply_const_vxx_2 = blocks.multiply_const_vcc(((not source_option), ))
-        self.blocks_multiply_const_vxx_1 = blocks.multiply_const_vff((1, ))
+        self.blocks_multiply_const_vxx_1 = blocks.multiply_const_vff((0.1, ))
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((2, ))
         self.blocks_multiply_const = blocks.multiply_const_vff((gain_before_tr, ))
-        self.blocks_message_debug_0 = blocks.message_debug()
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC1_BEACON.bin', True)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC2_BEACON.bin', True)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 63)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
@@ -488,7 +489,8 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.msg_connect((self.fec_async_decoder_0, 'out'), (self.iustsat_zafar_telemetry_derand_0, 'in'))
-        self.msg_connect((self.iustsat_zafar_telemetry_derand_0, 'out'), (self.blocks_message_debug_0, 'print_pdu'))
+        self.msg_connect((self.iustsat_vt_to_decrypt_0, 'out'), (self.iustsat_pdu_debug_2_0_0, 'pdu_in'))
+        self.msg_connect((self.iustsat_zafar_telemetry_derand_0, 'out'), (self.iustsat_vt_to_decrypt_0, 'in'))
         self.msg_connect((self.iustsat_zafar_telemetry_frame_extractor_1, 'out'), (self.fec_async_decoder_0, 'in'))
         self.connect((self.analog_pll_freqdet_cf_0, 0), (self.dc_blocker_xx_0, 0))
         self.connect((self.blocks_add_const_vxx_0, 0), (self.fir_filter_xxx_0, 0))

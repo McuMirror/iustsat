@@ -735,7 +735,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1313,7 +1313,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC1_BEACON.bin</value>
+      <value>/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC2_BEACON.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1364,7 +1364,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1493,7 +1493,7 @@
     </param>
     <param>
       <key>const</key>
-      <value>1</value>
+      <value>0.1</value>
     </param>
     <param>
       <key>affinity</key>
@@ -1726,6 +1726,57 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>crypto_auth_dec_aes_gcm</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(560, 1580)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>crypto_auth_dec_aes_gcm_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>ivlen</key>
+      <value>96</value>
+    </param>
+    <param>
+      <key>keylen</key>
+      <value>16</value>
+    </param>
+    <param>
+      <key>key</key>
+      <value>[0xFE, 0xFF, 0xE9, 0x92, 0x86, 0x65, 0x73, 0x1C, 0x6D, 0x6A, 0x8F, 0x94, 0x67, 0x30, 0x83, 0x08]</value>
     </param>
   </block>
   <block>
@@ -2123,6 +2174,80 @@
     </param>
   </block>
   <block>
+    <key>iustsat_pdu_debug</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(856, 1596)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>iustsat_pdu_debug_0_0</value>
+    </param>
+    <param>
+      <key>meta_tag_key</key>
+      <value>auth_tag</value>
+    </param>
+  </block>
+  <block>
+    <key>iustsat_pdu_debug_2</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(512, 1700)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>iustsat_pdu_debug_2_0_0</value>
+    </param>
+    <param>
+      <key>meta_tag_key</key>
+      <value>aad</value>
+    </param>
+    <param>
+      <key>meta2_tag_key</key>
+      <value>auth_tag</value>
+    </param>
+  </block>
+  <block>
     <key>iustsat_synch_detect_tag</key>
     <param>
       <key>alias</key>
@@ -2158,7 +2283,7 @@
     </param>
     <param>
       <key>length</key>
-      <value>90*2*8</value>
+      <value>93*2*8</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -2170,7 +2295,62 @@
     </param>
     <param>
       <key>threshold</key>
-      <value>62</value>
+      <value>60</value>
+    </param>
+  </block>
+  <block>
+    <key>iustsat_vt_to_decrypt</key>
+    <param>
+      <key>aad_key</key>
+      <value>aad</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(248, 1448)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>iustsat_vt_to_decrypt_0</value>
+    </param>
+    <param>
+      <key>iv_key</key>
+      <value>iv</value>
+    </param>
+    <param>
+      <key>iv</key>
+      <value>[0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xCE, 0xDB, 0xAD, 0xDE, 0xCA, 0xF8, 0x88]</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>tag_key</key>
+      <value>auth_tag</value>
     </param>
   </block>
   <block>
@@ -2236,7 +2416,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(544, 1320)</value>
+      <value>(544, 1328)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4154,6 +4334,12 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>crypto_auth_dec_aes_gcm_0_0</source_block_id>
+    <sink_block_id>iustsat_pdu_debug_0_0</sink_block_id>
+    <source_key>pdus</source_key>
+    <sink_key>pdu_in</sink_key>
+  </connection>
+  <connection>
     <source_block_id>dc_blocker_xx_0</source_block_id>
     <sink_block_id>blocks_multiply_const</sink_block_id>
     <source_key>0</source_key>
@@ -4214,10 +4400,28 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>iustsat_zafar_telemetry_derand_0</source_block_id>
+    <source_block_id>iustsat_vt_to_decrypt_0</source_block_id>
     <sink_block_id>blocks_message_debug_0</sink_block_id>
     <source_key>out</source_key>
     <sink_key>print_pdu</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>iustsat_vt_to_decrypt_0</source_block_id>
+    <sink_block_id>crypto_auth_dec_aes_gcm_0_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>pdus</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>iustsat_vt_to_decrypt_0</source_block_id>
+    <sink_block_id>iustsat_pdu_debug_2_0_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>pdu_in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>iustsat_zafar_telemetry_derand_0</source_block_id>
+    <sink_block_id>iustsat_vt_to_decrypt_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>in</sink_key>
   </connection>
   <connection>
     <source_block_id>iustsat_zafar_telemetry_frame_extractor_1</source_block_id>

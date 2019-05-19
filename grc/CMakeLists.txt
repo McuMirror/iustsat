@@ -32,5 +32,5 @@ install(FILES
     iustsat_pdu_to_message.xml
     iustsat_zafar_telemetry_deinterleave.xml
     iustsat_pack_rsblock.xml
-    DESTINATION share/gnuradio/grc/blocks
+    iustsat_vt_to_decrypt.xml DESTINATION share/gnuradio/grc/blocks
 )

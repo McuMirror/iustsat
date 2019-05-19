@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<block>
+  <name>vt_to_decrypt</name>
+  <key>iustsat_vt_to_decrypt</key>
+  <category>[iustsat]</category>
+  <import>import iustsat</import>
+  <make>iustsat.vt_to_decrypt($iv_key, $iv, $aad_key, $tag_key)</make>
+
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>IV Key</name>
+    <key>iv_key</key>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>IV</name>
+    <key>iv</key>
+    <type>int_vector</type>
+  </param>
+
+  <param>
+    <name>AAD Key</name>
+    <key>aad_key</key>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Tag Key</name>
+    <key>tag_key</key>
+    <type>string</type>
+  </param>
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>out</name>
+    <type>message</type>
+  </source>
+</block>

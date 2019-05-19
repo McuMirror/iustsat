@@ -22,6 +22,7 @@
 #include "iustsat/pdu_to_message.h"
 #include "iustsat/zafar_telemetry_deinterleave.h"
 #include "iustsat/pack_rsblock.h"
+#include "iustsat/vt_to_decrypt.h"
 %}
 
 
@@ -56,3 +57,5 @@ GR_SWIG_BLOCK_MAGIC2(iustsat, zafar_telemetry_deinterleave);
 %include "iustsat/pack_rsblock.h"
 GR_SWIG_BLOCK_MAGIC2(iustsat, pack_rsblock);
 
+%include "iustsat/vt_to_decrypt.h"
+GR_SWIG_BLOCK_MAGIC2(iustsat, vt_to_decrypt);
