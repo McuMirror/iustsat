@@ -71,8 +71,8 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.symb_rate = symb_rate = 52083
-        self.sec_dec = sec_dec = 10
-        self.samp_per_symb = samp_per_symb = 10
+        self.sec_dec = sec_dec = 3
+        self.samp_per_symb = samp_per_symb = 4
         self.first_dec = first_dec = 1
         self.ad_samp_rate = ad_samp_rate = symb_rate*first_dec*sec_dec*samp_per_symb
         self.rate = rate = 2
@@ -84,7 +84,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.ss_ted_gain_range = ss_ted_gain_range = 100
         self.ss_loopbw_range = ss_loopbw_range = 0.4
         self.ss_damping_factor_range = ss_damping_factor_range = 0.5
-        self.source_option = source_option = 0
+        self.source_option = source_option = 1
         self.pll_loopbw_range = pll_loopbw_range = 0.15
         self.gain_before_tr = gain_before_tr = 30
         self.f_if = f_if = 100000
@@ -775,7 +775,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_plot_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_plot_grid_layout_0.setColumnStretch(c, 1)
-        self.low_pass_filter_0 = filter.fir_filter_ccf(10, firdes.low_pass(
+        self.low_pass_filter_0 = filter.fir_filter_ccf(sec_dec, firdes.low_pass(
         	1, ad_samp_rate/first_dec, channel_bw, channel_bw/10, firdes.WIN_HAMMING, 6.76))
         self.iustsat_zafar_telemetry_frame_extractor_1 = iustsat.zafar_telemetry_frame_extractor("pkt_len")
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
@@ -810,7 +810,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((2, ))
         self.blocks_multiply_const = blocks.multiply_const_vff((gain_before_tr, ))
         self.blocks_float_to_uchar_0 = blocks.float_to_uchar()
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/REC6_GMSK.bin', True)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC6_GMSK.bin', True)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/iust/Documents/zafar_prj/TelemetryReceivedData.bin', False)
         self.blocks_file_sink_0.set_unbuffered(False)

@@ -6689,6 +6689,10 @@
       <value>32</value>
     </param>
     <param>
+      <key>output_failed</key>
+      <value>True</value>
+    </param>
+    <param>
       <key>prim</key>
       <value>1</value>
     </param>
