@@ -233,7 +233,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>ad_samp_rate/10</value>
+      <value>ad_samp_rate/sec_dec</value>
     </param>
   </block>
   <block>
@@ -354,7 +354,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>100000</value>
+      <value>75000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -643,7 +643,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>4</value>
+      <value>6</value>
     </param>
   </block>
   <block>
@@ -670,7 +670,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>3</value>
+      <value>4</value>
     </param>
   </block>
   <block>
@@ -1314,7 +1314,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/iust/Documents/zafar_prj/TelemetryReceivedData.bin</value>
+      <value>/home/iust/Documents/zafar_prj/gr-iustsat/examples/ReceivedData/TelemetryReceivedData.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -3060,7 +3060,7 @@
     </param>
     <param>
       <key>width</key>
-      <value>channel_bw/10</value>
+      <value>channel_bw/20</value>
     </param>
     <param>
       <key>win</key>

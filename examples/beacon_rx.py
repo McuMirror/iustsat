@@ -31,6 +31,7 @@ from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
+import crypto
 import iustsat
 import pmt
 import sip
@@ -316,7 +317,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         	1 #number of inputs
         )
         self.qtgui_time_sink_x_0_0_0_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0_0.set_y_axis(-15, 15)
+        self.qtgui_time_sink_x_0_0_0_0_0.set_y_axis(-1.5, 1.5)
 
         self.qtgui_time_sink_x_0_0_0_0_0.set_y_label('Amplitude', "")
 
@@ -460,7 +461,8 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
         self.iustsat_vt_to_decrypt_0 = iustsat.vt_to_decrypt('iv', ([0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xCE, 0xDB, 0xAD, 0xDE, 0xCA, 0xF8, 0x88]), 'aad', 'auth_tag')
         self.iustsat_synch_detect_tag_1 = iustsat.synch_detect_tag(60,'pkt_len',93*2*8)
-        self.iustsat_pdu_debug_2_0_0 = iustsat.pdu_debug_2('aad', 'auth_tag')
+        self.iustsat_pdu_to_message_0 = iustsat.pdu_to_message('frm_len')
+        self.iustsat_pdu_debug_0_0 = iustsat.pdu_debug('auth_tag')
         self.iio_fmcomms2_source_0 = iio.fmcomms2_source_f32c('192.168.1.10', ad9361_lo_freq-(f_if+doppler), ad_samp_rate, ad_channel_bw, True, False, 0x8000, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
         self.fir_filter_xxx_0 = filter.fir_filter_fff(1, ([1,1,1,-1,1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,-1,-1,-1,1,1,1,1,1,1,1,1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,1,1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,-1,1,-1,1,1,1,-1,-1,-1,-1,-1,-1]))
         self.fir_filter_xxx_0.declare_sample_delay(0)
@@ -468,16 +470,21 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.digital_symbol_sync_xx_0 = digital.symbol_sync_ff(digital.TED_GARDNER, samp_per_symb/rrc_dec, ss_loopbw_range, ss_damping_factor_range, ss_ted_gain_range, 2, 1, digital.constellation_bpsk().base(), digital.IR_PFB_NO_MF, 128, ([]))
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.dc_blocker_xx_0 = filter.dc_blocker_ff(20000, True)
+        self.crypto_auth_dec_aes_gcm_0_0 = crypto.auth_dec_aes_gcm(([0xFE, 0xFF, 0xE9, 0x92, 0x86, 0x65, 0x73, 0x1C, 0x6D, 0x6A, 0x8F, 0x94, 0x67, 0x30, 0x83, 0x08]), 16, 96)
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
         self.blocks_tag_gate_0 = blocks.tag_gate(gr.sizeof_gr_complex * 1, False)
         self.blocks_tag_gate_0.set_single_key("")
+        self.blocks_pdu_to_tagged_stream_0_0_0_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'frm_len')
         self.blocks_multiply_const_vxx_2_0 = blocks.multiply_const_vcc((source_option, ))
         self.blocks_multiply_const_vxx_2 = blocks.multiply_const_vcc(((not source_option), ))
         self.blocks_multiply_const_vxx_1 = blocks.multiply_const_vff((0.1, ))
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((2, ))
         self.blocks_multiply_const = blocks.multiply_const_vff((gain_before_tr, ))
+        self.blocks_float_to_uchar_0 = blocks.float_to_uchar()
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC2_BEACON.bin', True)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/ReceivedData/BeaconReceivedData.bin', False)
+        self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 63)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
         self.blocks_add_const_vxx_0 = blocks.add_const_vff((-1, ))
@@ -488,8 +495,11 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
+        self.msg_connect((self.crypto_auth_dec_aes_gcm_0_0, 'pdus'), (self.iustsat_pdu_debug_0_0, 'pdu_in'))
+        self.msg_connect((self.crypto_auth_dec_aes_gcm_0_0, 'pdus'), (self.iustsat_pdu_to_message_0, 'in'))
         self.msg_connect((self.fec_async_decoder_0, 'out'), (self.iustsat_zafar_telemetry_derand_0, 'in'))
-        self.msg_connect((self.iustsat_vt_to_decrypt_0, 'out'), (self.iustsat_pdu_debug_2_0_0, 'pdu_in'))
+        self.msg_connect((self.iustsat_pdu_to_message_0, 'out'), (self.blocks_pdu_to_tagged_stream_0_0_0_0, 'pdus'))
+        self.msg_connect((self.iustsat_vt_to_decrypt_0, 'out'), (self.crypto_auth_dec_aes_gcm_0_0, 'pdus'))
         self.msg_connect((self.iustsat_zafar_telemetry_derand_0, 'out'), (self.iustsat_vt_to_decrypt_0, 'in'))
         self.msg_connect((self.iustsat_zafar_telemetry_frame_extractor_1, 'out'), (self.fec_async_decoder_0, 'in'))
         self.connect((self.analog_pll_freqdet_cf_0, 0), (self.dc_blocker_xx_0, 0))
@@ -497,11 +507,13 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_add_xx_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.blocks_delay_0, 0), (self.iustsat_synch_detect_tag_1, 0))
         self.connect((self.blocks_file_source_0, 0), (self.blocks_multiply_const_vxx_2, 0))
+        self.connect((self.blocks_float_to_uchar_0, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.blocks_multiply_const, 0), (self.root_raised_cosine_filter_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_add_const_vxx_0, 0))
         self.connect((self.blocks_multiply_const_vxx_1, 0), (self.blocks_delay_0, 0))
         self.connect((self.blocks_multiply_const_vxx_2, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.blocks_multiply_const_vxx_2_0, 0), (self.blocks_add_xx_0, 0))
+        self.connect((self.blocks_pdu_to_tagged_stream_0_0_0_0, 0), (self.blocks_float_to_uchar_0, 0))
         self.connect((self.blocks_tag_gate_0, 0), (self.blocks_multiply_const_vxx_2_0, 0))
         self.connect((self.blocks_uchar_to_float_0, 0), (self.blocks_multiply_const_vxx_0, 0))
         self.connect((self.dc_blocker_xx_0, 0), (self.blocks_multiply_const, 0))

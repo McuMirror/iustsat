@@ -71,14 +71,14 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.symb_rate = symb_rate = 52083
-        self.sec_dec = sec_dec = 3
-        self.samp_per_symb = samp_per_symb = 4
+        self.sec_dec = sec_dec = 4
+        self.samp_per_symb = samp_per_symb = 6
         self.first_dec = first_dec = 1
         self.ad_samp_rate = ad_samp_rate = symb_rate*first_dec*sec_dec*samp_per_symb
         self.rate = rate = 2
         self.polys = polys = [109, 79]
         self.k = k = 7
-        self.channel_bw = channel_bw = ad_samp_rate/10
+        self.channel_bw = channel_bw = ad_samp_rate/sec_dec
         self.MTU = MTU = 1500
         self.waterfall_per = waterfall_per = 0.1
         self.ss_ted_gain_range = ss_ted_gain_range = 100
@@ -87,7 +87,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.source_option = source_option = 1
         self.pll_loopbw_range = pll_loopbw_range = 0.15
         self.gain_before_tr = gain_before_tr = 30
-        self.f_if = f_if = 100000
+        self.f_if = f_if = 75000
         self.doppler = doppler = 0
 
 
@@ -776,7 +776,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         for c in range(0, 4):
             self.tab_plot_grid_layout_0.setColumnStretch(c, 1)
         self.low_pass_filter_0 = filter.fir_filter_ccf(sec_dec, firdes.low_pass(
-        	1, ad_samp_rate/first_dec, channel_bw, channel_bw/10, firdes.WIN_HAMMING, 6.76))
+        	1, ad_samp_rate/first_dec, channel_bw, channel_bw/20, firdes.WIN_HAMMING, 6.76))
         self.iustsat_zafar_telemetry_frame_extractor_1 = iustsat.zafar_telemetry_frame_extractor("pkt_len")
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
         self.iustsat_tag_counter_0 = iustsat.tag_counter('pkt_len')
@@ -812,7 +812,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.blocks_float_to_uchar_0 = blocks.float_to_uchar()
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC6_GMSK.bin', True)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/iust/Documents/zafar_prj/TelemetryReceivedData.bin', False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/ReceivedData/TelemetryReceivedData.bin', False)
         self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_delay_0_0 = blocks.delay(gr.sizeof_float*1, 63)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 63)
@@ -901,6 +901,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
 
     def set_sec_dec(self, sec_dec):
         self.sec_dec = sec_dec
+        self.set_channel_bw(self.ad_samp_rate/self.sec_dec)
         self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.sec_dec*self.samp_per_symb)
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.ad_samp_rate/self.first_dec/self.sec_dec)
         self.qtgui_time_sink_x_0_0_0_0_0_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec/self.samp_per_symb)
@@ -933,7 +934,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec/self.samp_per_symb)
         self.qtgui_time_sink_x_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.ad_samp_rate/self.first_dec/self.sec_dec)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.ad_samp_rate/self.first_dec, self.channel_bw, self.channel_bw/10, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.ad_samp_rate/self.first_dec, self.channel_bw, self.channel_bw/20, firdes.WIN_HAMMING, 6.76))
         self.analog_pll_freqdet_cf_0.set_max_freq(200000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
         self.analog_pll_freqdet_cf_0.set_min_freq(-200000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
 
@@ -942,14 +943,14 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
 
     def set_ad_samp_rate(self, ad_samp_rate):
         self.ad_samp_rate = ad_samp_rate
-        self.set_channel_bw(self.ad_samp_rate/10)
+        self.set_channel_bw(self.ad_samp_rate/self.sec_dec)
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.ad_samp_rate/self.first_dec/self.sec_dec)
         self.qtgui_time_sink_x_0_0_0_0_0_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec/self.samp_per_symb)
         self.qtgui_time_sink_x_0_0_0_0_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec/self.samp_per_symb)
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec/self.samp_per_symb)
         self.qtgui_time_sink_x_0.set_samp_rate(self.ad_samp_rate/self.first_dec/self.sec_dec)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.ad_samp_rate/self.first_dec/self.sec_dec)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.ad_samp_rate/self.first_dec, self.channel_bw, self.channel_bw/10, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.ad_samp_rate/self.first_dec, self.channel_bw, self.channel_bw/20, firdes.WIN_HAMMING, 6.76))
         self.iio_fmcomms2_source_0.set_params(self.ad9361_lo_freq-(self.f_if+self.doppler), self.ad_samp_rate, self.ad_channel_bw, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
         self.analog_pll_freqdet_cf_0.set_max_freq(200000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
         self.analog_pll_freqdet_cf_0.set_min_freq(-200000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
@@ -978,7 +979,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
     def set_channel_bw(self, channel_bw):
         self.channel_bw = channel_bw
         self.set_ad_channel_bw(self.channel_bw*5)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.ad_samp_rate/self.first_dec, self.channel_bw, self.channel_bw/10, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.ad_samp_rate/self.first_dec, self.channel_bw, self.channel_bw/20, firdes.WIN_HAMMING, 6.76))
 
     def get_MTU(self):
         return self.MTU
