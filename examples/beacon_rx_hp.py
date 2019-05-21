@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Beacon Rx
+# Title: Beacon Rx Hp
 # GNU Radio version: 3.7.13.4
 ##################################################
 
@@ -39,12 +39,12 @@ import sys
 from gnuradio import qtgui
 
 
-class beacon_rx(gr.top_block, Qt.QWidget):
+class beacon_rx_hp(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Beacon Rx")
+        gr.top_block.__init__(self, "Beacon Rx Hp")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Beacon Rx")
+        self.setWindowTitle("Beacon Rx Hp")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -62,7 +62,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "beacon_rx")
+        self.settings = Qt.QSettings("GNU Radio", "beacon_rx_hp")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
@@ -427,7 +427,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.connect((self.root_raised_cosine_filter_0, 0), (self.digital_symbol_sync_xx_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "beacon_rx")
+        self.settings = Qt.QSettings("GNU Radio", "beacon_rx_hp")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -608,7 +608,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.iio_fmcomms2_source_0.set_params(self.ad9361_lo_freq-(self.f_if+self.doppler), self.ad_samp_rate, self.ad_channel_bw, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
 
 
-def main(top_block_cls=beacon_rx, options=None):
+def main(top_block_cls=beacon_rx_hp, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):

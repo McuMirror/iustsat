@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>beacon_rx</value>
+      <value>beacon_rx_hp</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -206,7 +206,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>symb_rate*first_dec*sec_dec*samp_per_symb</value>
+      <value>symb_rate*first_dec*samp_per_symb</value>
     </param>
   </block>
   <block>
@@ -436,7 +436,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>3</value>
+      <value>3*10</value>
     </param>
   </block>
   <block>
@@ -698,33 +698,6 @@
     <param>
       <key>value</key>
       <value>80</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(408, 12)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>sec_dec</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>10</value>
     </param>
   </block>
   <block>
@@ -1117,7 +1090,7 @@
     </param>
     <param>
       <key>max_freq</key>
-      <value>20000*6.28/(ad_samp_rate/first_dec/sec_dec)</value>
+      <value>20000*6.28/(ad_samp_rate/first_dec)</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1125,7 +1098,7 @@
     </param>
     <param>
       <key>min_freq</key>
-      <value>0*6.28/(ad_samp_rate/first_dec/sec_dec)</value>
+      <value>0*6.28/(ad_samp_rate/first_dec)</value>
     </param>
     <param>
       <key>minoutbuf</key>
@@ -1932,7 +1905,7 @@
     </param>
     <param>
       <key>nfilters</key>
-      <value>128</value>
+      <value>32</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2541,7 +2514,7 @@
     </param>
     <param>
       <key>decim</key>
-      <value>sec_dec</value>
+      <value>first_dec</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -2553,7 +2526,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(728, 600)</value>
+      <value>(656, 600)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2581,86 +2554,11 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>symb_rate*samp_per_symb*sec_dec</value>
+      <value>symb_rate*samp_per_symb*first_dec</value>
     </param>
     <param>
       <key>width</key>
       <value>channel_bw/filt_sharp</value>
-    </param>
-    <param>
-      <key>win</key>
-      <value>firdes.WIN_HAMMING</value>
-    </param>
-  </block>
-  <block>
-    <key>low_pass_filter</key>
-    <param>
-      <key>beta</key>
-      <value>6.76</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>cutoff_freq</key>
-      <value>channel_bw*sec_dec</value>
-    </param>
-    <param>
-      <key>decim</key>
-      <value>first_dec</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>fir_filter_ccf</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(536, 600)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>gain</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>low_pass_filter_0_0</value>
-    </param>
-    <param>
-      <key>interp</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>samp_rate</key>
-      <value>symb_rate*samp_per_symb*sec_dec*first_dec</value>
-    </param>
-    <param>
-      <key>width</key>
-      <value>channel_bw*sec_dec/filt_sharp</value>
     </param>
     <param>
       <key>win</key>
@@ -2707,7 +2605,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>fftsize</key>
@@ -2998,7 +2896,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -3983,7 +3881,7 @@
     </param>
     <param>
       <key>ntaps</key>
-      <value>100</value>
+      <value>32</value>
     </param>
     <param>
       <key>samp_rate</key>
@@ -4389,7 +4287,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_multiply_matrix_xx_0</source_block_id>
-    <sink_block_id>low_pass_filter_0_0</sink_block_id>
+    <sink_block_id>low_pass_filter_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -4528,12 +4426,6 @@
   <connection>
     <source_block_id>low_pass_filter_0</source_block_id>
     <sink_block_id>qtgui_waterfall_sink_x_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>low_pass_filter_0_0</source_block_id>
-    <sink_block_id>low_pass_filter_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
