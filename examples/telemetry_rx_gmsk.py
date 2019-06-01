@@ -82,8 +82,8 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.ss_ted_gain_range = ss_ted_gain_range = 100
         self.ss_loopbw_range = ss_loopbw_range = 0.4
         self.ss_damping_factor_range = ss_damping_factor_range = 0.5
-        self.source_option = source_option = (0,1)
-        self.pll_loopbw_range = pll_loopbw_range = 0.15
+        self.source_option = source_option = (1,0)
+        self.pll_loopbw_range = pll_loopbw_range = 0.3
         self.gain_before_tr = gain_before_tr = 30
         self.f_if = f_if = 75000
         self.doppler = doppler = 0
@@ -219,7 +219,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_0.setColumnStretch(c, 1)
-        self._pll_loopbw_range_range = Range(0.001, 2, 0.001, 0.15, 10000)
+        self._pll_loopbw_range_range = Range(0.001, 2, 0.001, 0.3, 10000)
         self._pll_loopbw_range_win = RangeWidget(self._pll_loopbw_range_range, self.set_pll_loopbw_range, 'PLL LBW', "slider", float)
         self.tab_control_grid_layout_1.addWidget(self._pll_loopbw_range_win, 0, 0, 1, 4)
         for r in range(0, 1):

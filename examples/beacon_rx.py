@@ -71,10 +71,11 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         ##################################################
         self.symb_rate = symb_rate = 270
         self.samp_per_symb = samp_per_symb = 80
+        self.sec_dec = sec_dec = 10
         self.rate = rate = 2
         self.polys = polys = [109, 79]
         self.k = k = 7
-        self.first_dec = first_dec = 3*10
+        self.first_dec = first_dec = 3
         self.channel_bw = channel_bw = symb_rate*samp_per_symb/2
         self.MTU = MTU = 1500
         self.waterfall_per = waterfall_per = 0.1
@@ -92,7 +93,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
 
         self.dec_cc = dec_cc = fec.cc_decoder.make(MTU*8, k, rate, (polys), 0, -1, fec.CC_TERMINATED, False)
 
-        self.ad_samp_rate = ad_samp_rate = symb_rate*first_dec*samp_per_symb
+        self.ad_samp_rate = ad_samp_rate = symb_rate*first_dec*sec_dec*samp_per_symb
         self.ad_channel_bw = ad_channel_bw = channel_bw*10
         self.ad9361_lo_freq = ad9361_lo_freq = 438000000
 
@@ -131,6 +132,17 @@ class beacon_rx(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_0.setColumnStretch(c, 1)
+        self.tab_stat = Qt.QTabWidget()
+        self.tab_stat_widget_0 = Qt.QWidget()
+        self.tab_stat_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_stat_widget_0)
+        self.tab_stat_grid_layout_0 = Qt.QGridLayout()
+        self.tab_stat_layout_0.addLayout(self.tab_stat_grid_layout_0)
+        self.tab_stat.addTab(self.tab_stat_widget_0, 'General')
+        self.top_grid_layout.addWidget(self.tab_stat, 3, 0, 1, 1)
+        for r in range(3, 4):
+            self.top_grid_layout.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.top_grid_layout.setColumnStretch(c, 1)
         self.tab_plot = Qt.QTabWidget()
         self.tab_plot_widget_0 = Qt.QWidget()
         self.tab_plot_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_plot_widget_0)
@@ -256,19 +268,8 @@ class beacon_rx(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_0.setColumnStretch(c, 1)
-        self.tab_stat = Qt.QTabWidget()
-        self.tab_stat_widget_0 = Qt.QWidget()
-        self.tab_stat_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_stat_widget_0)
-        self.tab_stat_grid_layout_0 = Qt.QGridLayout()
-        self.tab_stat_layout_0.addLayout(self.tab_stat_grid_layout_0)
-        self.tab_stat.addTab(self.tab_stat_widget_0, 'General')
-        self.top_grid_layout.addWidget(self.tab_stat, 3, 0, 1, 1)
-        for r in range(3, 4):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
         self.root_raised_cosine_filter_0 = filter.fir_filter_fff(rrc_dec, firdes.root_raised_cosine(
-        	1, symb_rate*samp_per_symb/rrc_dec, symb_rate, 0.7, 32))
+        	1, symb_rate*samp_per_symb/rrc_dec, symb_rate, 0.7, 100))
         self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
         	1024, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -357,11 +358,144 @@ class beacon_rx(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_0_0_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_0.pyqwidget(), Qt.QWidget)
         self.tab_plot_grid_layout_2.addWidget(self._qtgui_time_sink_x_0_0_0_0_0_win)
-        self.low_pass_filter_0 = filter.fir_filter_ccf(first_dec, firdes.low_pass(
-        	1, symb_rate*samp_per_symb*first_dec, channel_bw, channel_bw/filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
+        	100, #size
+        	symb_rate, #samp_rate
+        	"", #name
+        	1 #number of inputs
+        )
+        self.qtgui_time_sink_x_0_0_0.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_0_0.set_y_axis(-15, 15)
+
+        self.qtgui_time_sink_x_0_0_0.set_y_label('Amplitude', "")
+
+        self.qtgui_time_sink_x_0_0_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_0_0.enable_autoscale(False)
+        self.qtgui_time_sink_x_0_0_0.enable_grid(False)
+        self.qtgui_time_sink_x_0_0_0.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_0_0.enable_control_panel(True)
+        self.qtgui_time_sink_x_0_0_0.enable_stem_plot(False)
+
+        if not True:
+          self.qtgui_time_sink_x_0_0_0.disable_legend()
+
+        labels = ['Output', 'T_Avg', 'T_Inst', 'T_Error', '',
+                  '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "blue"]
+        styles = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        markers = [2, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_time_sink_x_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_time_sink_x_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_time_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0.pyqwidget(), Qt.QWidget)
+        self.tab_plot_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_0_win)
+        self.qtgui_number_sink_0 = qtgui.number_sink(
+            gr.sizeof_float,
+            0,
+            qtgui.NUM_GRAPH_NONE,
+            2
+        )
+        self.qtgui_number_sink_0.set_update_time(0.10)
+        self.qtgui_number_sink_0.set_title("Received Frame Counter")
+
+        labels = ['Counter', 'Rate (bps)', '', '', '',
+                  '', '', '', '', '']
+        units = ['', '', '', '', '',
+                 '', '', '', '', '']
+        colors = [("black", "black"), ("black", "black"), ("black", "black"), ("black", "black"), ("black", "black"),
+                  ("black", "black"), ("black", "black"), ("black", "black"), ("black", "black"), ("black", "black")]
+        factor = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        for i in xrange(2):
+            self.qtgui_number_sink_0.set_min(i, -1)
+            self.qtgui_number_sink_0.set_max(i, 1)
+            self.qtgui_number_sink_0.set_color(i, colors[i][0], colors[i][1])
+            if len(labels[i]) == 0:
+                self.qtgui_number_sink_0.set_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_number_sink_0.set_label(i, labels[i])
+            self.qtgui_number_sink_0.set_unit(i, units[i])
+            self.qtgui_number_sink_0.set_factor(i, factor[i])
+
+        self.qtgui_number_sink_0.enable_autoscale(False)
+        self._qtgui_number_sink_0_win = sip.wrapinstance(self.qtgui_number_sink_0.pyqwidget(), Qt.QWidget)
+        self.tab_stat_grid_layout_0.addWidget(self._qtgui_number_sink_0_win, 0, 2, 2, 1)
+        for r in range(0, 2):
+            self.tab_stat_grid_layout_0.setRowStretch(r, 1)
+        for c in range(2, 3):
+            self.tab_stat_grid_layout_0.setColumnStretch(c, 1)
+        self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
+        	1024, #size
+        	firdes.WIN_BLACKMAN_hARRIS, #wintype
+        	0, #fc
+        	symb_rate*samp_per_symb, #bw
+        	"", #name
+        	1 #number of inputs
+        )
+        self.qtgui_freq_sink_x_0.set_update_time(0.10)
+        self.qtgui_freq_sink_x_0.set_y_axis(-160, 10)
+        self.qtgui_freq_sink_x_0.set_y_label('Relative Gain', 'dB')
+        self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
+        self.qtgui_freq_sink_x_0.enable_autoscale(False)
+        self.qtgui_freq_sink_x_0.enable_grid(False)
+        self.qtgui_freq_sink_x_0.set_fft_average(1.0)
+        self.qtgui_freq_sink_x_0.enable_axis_labels(True)
+        self.qtgui_freq_sink_x_0.enable_control_panel(False)
+
+        if not False:
+          self.qtgui_freq_sink_x_0.disable_legend()
+
+        if "complex" == "float" or "complex" == "msg_float":
+          self.qtgui_freq_sink_x_0.set_plot_pos_half(not True)
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+        for i in xrange(1):
+            if len(labels[i]) == 0:
+                self.qtgui_freq_sink_x_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_freq_sink_x_0.set_line_label(i, labels[i])
+            self.qtgui_freq_sink_x_0.set_line_width(i, widths[i])
+            self.qtgui_freq_sink_x_0.set_line_color(i, colors[i])
+            self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
+        self.tab_plot_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 0, 0, 2, 4)
+        for r in range(0, 2):
+            self.tab_plot_grid_layout_0.setRowStretch(r, 1)
+        for c in range(0, 4):
+            self.tab_plot_grid_layout_0.setColumnStretch(c, 1)
+        self.low_pass_filter_0_0 = filter.fir_filter_ccf(first_dec, firdes.low_pass(
+        	1, symb_rate*samp_per_symb*sec_dec*first_dec, channel_bw*sec_dec, channel_bw*sec_dec/filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0 = filter.fir_filter_ccf(sec_dec, firdes.low_pass(
+        	1, symb_rate*samp_per_symb*sec_dec, channel_bw, channel_bw/filt_sharp, firdes.WIN_HAMMING, 6.76))
         self.iustsat_zafar_telemetry_frame_extractor_1 = iustsat.zafar_telemetry_frame_extractor("pkt_len")
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
         self.iustsat_vt_to_decrypt_0 = iustsat.vt_to_decrypt('iv', ([0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xCE, 0xDB, 0xAD, 0xDE, 0xCA, 0xF8, 0x88]), 'aad', 'auth_tag')
+        self.iustsat_tag_counter_0 = iustsat.tag_counter('pkt_len')
         self.iustsat_synch_detect_tag_1 = iustsat.synch_detect_tag(60,'pkt_len',93*2*8)
         self.iustsat_pdu_to_message_0 = iustsat.pdu_to_message('frm_len')
         self.iustsat_pdu_debug_0_0 = iustsat.pdu_debug('auth_tag')
@@ -369,7 +503,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.fir_filter_xxx_0 = filter.fir_filter_fff(1, ([1,1,1,-1,1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,-1,-1,-1,1,1,1,1,1,1,1,1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,1,1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,-1,1,-1,1,1,1,-1,-1,-1,-1,-1,-1]))
         self.fir_filter_xxx_0.declare_sample_delay(0)
         self.fec_async_decoder_0 = fec.async_decoder(dec_cc, True, False, MTU)
-        self.digital_symbol_sync_xx_0 = digital.symbol_sync_ff(digital.TED_GARDNER, samp_per_symb/rrc_dec, ss_loopbw_range, ss_damping_factor_range, ss_ted_gain_range, 2, 1, digital.constellation_bpsk().base(), digital.IR_PFB_NO_MF, 32, ([]))
+        self.digital_symbol_sync_xx_0 = digital.symbol_sync_ff(digital.TED_GARDNER, samp_per_symb/rrc_dec, ss_loopbw_range, ss_damping_factor_range, ss_ted_gain_range, 2, 1, digital.constellation_bpsk().base(), digital.IR_PFB_NO_MF, 128, ([]))
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.dc_blocker_xx_0 = filter.dc_blocker_ff(20000, True)
         self.crypto_auth_dec_aes_gcm_0_0 = crypto.auth_dec_aes_gcm(([0xFE, 0xFF, 0xE9, 0x92, 0x86, 0x65, 0x73, 0x1C, 0x6D, 0x6A, 0x8F, 0x94, 0x67, 0x30, 0x83, 0x08]), 16, 96)
@@ -388,7 +522,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 63)
         self.blocks_add_const_vxx_0 = blocks.add_const_vff((-1, ))
-        self.analog_pll_freqdet_cf_0 = analog.pll_freqdet_cf(pll_loopbw_range, 20000*6.28/(ad_samp_rate/first_dec), 0*6.28/(ad_samp_rate/first_dec))
+        self.analog_pll_freqdet_cf_0 = analog.pll_freqdet_cf(pll_loopbw_range, 20000*6.28/(ad_samp_rate/first_dec/sec_dec), 0*6.28/(ad_samp_rate/first_dec/sec_dec))
 
 
 
@@ -410,7 +544,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_multiply_const, 0), (self.root_raised_cosine_filter_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_add_const_vxx_0, 0))
         self.connect((self.blocks_multiply_const_vxx_1, 0), (self.blocks_delay_0, 0))
-        self.connect((self.blocks_multiply_matrix_xx_0, 0), (self.low_pass_filter_0, 0))
+        self.connect((self.blocks_multiply_matrix_xx_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.blocks_pdu_to_tagged_stream_0_0_0_0, 0), (self.blocks_float_to_uchar_0, 0))
         self.connect((self.blocks_tag_gate_0, 0), (self.blocks_multiply_matrix_xx_0, 0))
         self.connect((self.blocks_uchar_to_float_0, 0), (self.blocks_multiply_const_vxx_0, 0))
@@ -418,12 +552,18 @@ class beacon_rx(gr.top_block, Qt.QWidget):
         self.connect((self.digital_binary_slicer_fb_0, 0), (self.blocks_uchar_to_float_0, 0))
         self.connect((self.digital_symbol_sync_xx_0, 0), (self.blocks_multiply_const_vxx_1, 0))
         self.connect((self.digital_symbol_sync_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))
+        self.connect((self.digital_symbol_sync_xx_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))
         self.connect((self.fir_filter_xxx_0, 0), (self.iustsat_synch_detect_tag_1, 1))
         self.connect((self.iio_fmcomms2_source_0, 0), (self.blocks_tag_gate_0, 0))
+        self.connect((self.iustsat_synch_detect_tag_1, 0), (self.iustsat_tag_counter_0, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.iustsat_zafar_telemetry_frame_extractor_1, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.qtgui_time_sink_x_0_0_0_0_0, 0))
+        self.connect((self.iustsat_tag_counter_0, 0), (self.qtgui_number_sink_0, 0))
+        self.connect((self.iustsat_tag_counter_0, 1), (self.qtgui_number_sink_0, 1))
         self.connect((self.low_pass_filter_0, 0), (self.analog_pll_freqdet_cf_0, 0))
+        self.connect((self.low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
+        self.connect((self.low_pass_filter_0_0, 0), (self.low_pass_filter_0, 0))
         self.connect((self.root_raised_cosine_filter_0, 0), (self.digital_symbol_sync_xx_0, 0))
 
     def closeEvent(self, event):
@@ -437,11 +577,14 @@ class beacon_rx(gr.top_block, Qt.QWidget):
     def set_symb_rate(self, symb_rate):
         self.symb_rate = symb_rate
         self.set_channel_bw(self.symb_rate*self.samp_per_symb/2)
-        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.samp_per_symb)
-        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.symb_rate*self.samp_per_symb/self.rrc_dec, self.symb_rate, 0.7, 32))
+        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.sec_dec*self.samp_per_symb)
+        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.symb_rate*self.samp_per_symb/self.rrc_dec, self.symb_rate, 0.7, 100))
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
         self.qtgui_time_sink_x_0_0_0_0_0.set_samp_rate(self.symb_rate)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.first_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.symb_rate)
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
+        self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec*self.first_dec, self.channel_bw*self.sec_dec, self.channel_bw*self.sec_dec/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
 
     def get_samp_per_symb(self):
         return self.samp_per_symb
@@ -449,10 +592,23 @@ class beacon_rx(gr.top_block, Qt.QWidget):
     def set_samp_per_symb(self, samp_per_symb):
         self.samp_per_symb = samp_per_symb
         self.set_channel_bw(self.symb_rate*self.samp_per_symb/2)
-        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.samp_per_symb)
-        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.symb_rate*self.samp_per_symb/self.rrc_dec, self.symb_rate, 0.7, 32))
+        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.sec_dec*self.samp_per_symb)
+        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.symb_rate*self.samp_per_symb/self.rrc_dec, self.symb_rate, 0.7, 100))
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.first_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
+        self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec*self.first_dec, self.channel_bw*self.sec_dec, self.channel_bw*self.sec_dec/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+
+    def get_sec_dec(self):
+        return self.sec_dec
+
+    def set_sec_dec(self, sec_dec):
+        self.sec_dec = sec_dec
+        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.sec_dec*self.samp_per_symb)
+        self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec*self.first_dec, self.channel_bw*self.sec_dec, self.channel_bw*self.sec_dec/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.analog_pll_freqdet_cf_0.set_max_freq(20000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
+        self.analog_pll_freqdet_cf_0.set_min_freq(0*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
 
     def get_rate(self):
         return self.rate
@@ -477,10 +633,10 @@ class beacon_rx(gr.top_block, Qt.QWidget):
 
     def set_first_dec(self, first_dec):
         self.first_dec = first_dec
-        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.samp_per_symb)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.first_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
-        self.analog_pll_freqdet_cf_0.set_max_freq(20000*6.28/(self.ad_samp_rate/self.first_dec))
-        self.analog_pll_freqdet_cf_0.set_min_freq(0*6.28/(self.ad_samp_rate/self.first_dec))
+        self.set_ad_samp_rate(self.symb_rate*self.first_dec*self.sec_dec*self.samp_per_symb)
+        self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec*self.first_dec, self.channel_bw*self.sec_dec, self.channel_bw*self.sec_dec/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.analog_pll_freqdet_cf_0.set_max_freq(20000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
+        self.analog_pll_freqdet_cf_0.set_min_freq(0*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
 
     def get_channel_bw(self):
         return self.channel_bw
@@ -488,7 +644,8 @@ class beacon_rx(gr.top_block, Qt.QWidget):
     def set_channel_bw(self, channel_bw):
         self.channel_bw = channel_bw
         self.set_ad_channel_bw(self.channel_bw*10)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.first_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec*self.first_dec, self.channel_bw*self.sec_dec, self.channel_bw*self.sec_dec/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
 
     def get_MTU(self):
         return self.MTU
@@ -538,7 +695,7 @@ class beacon_rx(gr.top_block, Qt.QWidget):
 
     def set_rrc_dec(self, rrc_dec):
         self.rrc_dec = rrc_dec
-        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.symb_rate*self.samp_per_symb/self.rrc_dec, self.symb_rate, 0.7, 32))
+        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.symb_rate*self.samp_per_symb/self.rrc_dec, self.symb_rate, 0.7, 100))
 
     def get_pll_loopbw_range(self):
         return self.pll_loopbw_range
@@ -559,7 +716,8 @@ class beacon_rx(gr.top_block, Qt.QWidget):
 
     def set_filt_sharp(self, filt_sharp):
         self.filt_sharp = filt_sharp
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.first_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec*self.first_dec, self.channel_bw*self.sec_dec, self.channel_bw*self.sec_dec/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/self.filt_sharp, firdes.WIN_HAMMING, 6.76))
 
     def get_f_if(self):
         return self.f_if
@@ -589,8 +747,8 @@ class beacon_rx(gr.top_block, Qt.QWidget):
     def set_ad_samp_rate(self, ad_samp_rate):
         self.ad_samp_rate = ad_samp_rate
         self.iio_fmcomms2_source_0.set_params(self.ad9361_lo_freq-(self.f_if+self.doppler), self.ad_samp_rate, self.ad_channel_bw, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
-        self.analog_pll_freqdet_cf_0.set_max_freq(20000*6.28/(self.ad_samp_rate/self.first_dec))
-        self.analog_pll_freqdet_cf_0.set_min_freq(0*6.28/(self.ad_samp_rate/self.first_dec))
+        self.analog_pll_freqdet_cf_0.set_max_freq(20000*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
+        self.analog_pll_freqdet_cf_0.set_min_freq(0*6.28/(self.ad_samp_rate/self.first_dec/self.sec_dec))
 
     def get_ad_channel_bw(self):
         return self.ad_channel_bw

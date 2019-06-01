@@ -366,7 +366,7 @@ class telecommand_tx(gr.top_block, Qt.QWidget):
         self.tab_plot_grid_layout_1.addWidget(self._qtgui_freq_sink_x_0_win)
         self.low_pass_filter_0 = filter.interp_fir_filter_ccf(8, firdes.low_pass(
         	1, bit_rate*rrc_inter*8, bit_rate*rrc_inter/2, bit_rate*rrc_inter/20, firdes.WIN_HAMMING, 6.76))
-        self.iio_fmcomms2_sink_0 = iio.fmcomms2_sink_f32c('192.168.1.10', 144100000, bit_rate*rrc_inter*8, 100000, True, False, 0x8000, False, "A", 10, 10, '', True)
+        self.iio_fmcomms2_sink_0 = iio.fmcomms2_sink_f32c('192.168.1.10', 144100000, bit_rate*rrc_inter*8, 100000, False, True, 0x8000, False, "A", 10, 60, '', True)
         self.digital_map_bb_0 = digital.map_bb(([-1,1]))
         self._data_src_options = ((1,0), (0,1), )
         self._data_src_labels = ('Source', 'Preamble', )
@@ -380,13 +380,13 @@ class telecommand_tx(gr.top_block, Qt.QWidget):
         self._data_src_combo_box.currentIndexChanged.connect(
         	lambda i: self.set_data_src(self._data_src_options[i]))
         self.tab_ctrl_grid_layout_0.addWidget(self._data_src_tool_bar)
-        self.blocks_vector_source_x_0_0 = blocks.vector_source_b([0x55, 0x55, 0x55, 0x55], True, 1, [])
+        self.blocks_vector_source_x_0 = blocks.vector_source_b([0xEB, 0x90, 0x3C] + range(0,251) + [0x55, 0x55, 0x55, 0x55], True, 1, [])
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_char*1, bit_rate,True)
         self.blocks_repack_bits_bb_0 = blocks.repack_bits_bb(8, 1, "", False, gr.GR_MSB_FIRST)
         self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_vff((tx_gain, ))
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((tx_gain2, ))
         self.blocks_float_to_char_0 = blocks.float_to_char(1, 1)
-        self.blocks_char_to_float_1_0 = blocks.char_to_float(1, 1)
+        self.blocks_char_to_float_1 = blocks.char_to_float(1, 1)
         self.blocks_char_to_float_0 = blocks.char_to_float(1, 1)
         self.analog_frequency_modulator_fc_0 = analog.frequency_modulator_fc(fdev*6.28/(bit_rate*rrc_inter))
 
@@ -399,7 +399,7 @@ class telecommand_tx(gr.top_block, Qt.QWidget):
         self.connect((self.analog_frequency_modulator_fc_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.analog_frequency_modulator_fc_0, 0), (self.qtgui_time_sink_x_0_0_0, 0))
         self.connect((self.blocks_char_to_float_0, 0), (self.root_raised_cosine_filter_0, 0))
-        self.connect((self.blocks_char_to_float_1_0, 0), (self.blocks_float_to_char_0, 0))
+        self.connect((self.blocks_char_to_float_1, 0), (self.blocks_float_to_char_0, 0))
         self.connect((self.blocks_float_to_char_0, 0), (self.blocks_repack_bits_bb_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.iio_fmcomms2_sink_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
@@ -408,7 +408,7 @@ class telecommand_tx(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.qtgui_time_sink_x_0, 0))
         self.connect((self.blocks_repack_bits_bb_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.digital_map_bb_0, 0))
-        self.connect((self.blocks_vector_source_x_0_0, 0), (self.blocks_char_to_float_1_0, 0))
+        self.connect((self.blocks_vector_source_x_0, 0), (self.blocks_char_to_float_1, 0))
         self.connect((self.digital_map_bb_0, 0), (self.blocks_char_to_float_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.blocks_multiply_const_vxx_0, 0))
         self.connect((self.root_raised_cosine_filter_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
@@ -431,7 +431,7 @@ class telecommand_tx(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.bit_rate*self.rrc_inter*8)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.bit_rate*self.rrc_inter)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.bit_rate*self.rrc_inter*8, self.bit_rate*self.rrc_inter/2, self.bit_rate*self.rrc_inter/20, firdes.WIN_HAMMING, 6.76))
-        self.iio_fmcomms2_sink_0.set_params(144100000, self.bit_rate*self.rrc_inter*8, 100000, "A", 10, 10, '', True)
+        self.iio_fmcomms2_sink_0.set_params(144100000, self.bit_rate*self.rrc_inter*8, 100000, "A", 10, 60, '', True)
         self.analog_frequency_modulator_fc_0.set_sensitivity(self.fdev*6.28/(self.bit_rate*self.rrc_inter))
 
     def get_bit_rate(self):
@@ -447,7 +447,7 @@ class telecommand_tx(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.bit_rate*self.rrc_inter*8)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.bit_rate*self.rrc_inter)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.bit_rate*self.rrc_inter*8, self.bit_rate*self.rrc_inter/2, self.bit_rate*self.rrc_inter/20, firdes.WIN_HAMMING, 6.76))
-        self.iio_fmcomms2_sink_0.set_params(144100000, self.bit_rate*self.rrc_inter*8, 100000, "A", 10, 10, '', True)
+        self.iio_fmcomms2_sink_0.set_params(144100000, self.bit_rate*self.rrc_inter*8, 100000, "A", 10, 60, '', True)
         self.blocks_throttle_0.set_sample_rate(self.bit_rate)
         self.analog_frequency_modulator_fc_0.set_sensitivity(self.fdev*6.28/(self.bit_rate*self.rrc_inter))
 

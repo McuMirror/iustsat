@@ -1266,7 +1266,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 1708)</value>
+      <value>(984, 1892)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1368,7 +1368,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 1728)</value>
+      <value>(808, 1912)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1407,7 +1407,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1176, 1456)</value>
+      <value>(1120, 1640)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1642,7 +1642,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 1724)</value>
+      <value>(560, 1908)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1783,7 +1783,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(600, 1452)</value>
+      <value>(544, 1636)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2015,7 +2015,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 1316)</value>
+      <value>(824, 1492)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2228,7 +2228,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(936, 1468)</value>
+      <value>(880, 1652)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2263,7 +2263,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(512, 1548)</value>
+      <value>(456, 1732)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2302,7 +2302,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 1724)</value>
+      <value>(352, 1908)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2377,6 +2377,49 @@
     </param>
   </block>
   <block>
+    <key>iustsat_tag_counter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(536, 1320)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>iustsat_tag_counter_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>key</key>
+      <value>pkt_len</value>
+    </param>
+  </block>
+  <block>
     <key>iustsat_vt_to_decrypt</key>
     <param>
       <key>aad_key</key>
@@ -2400,7 +2443,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(248, 1448)</value>
+      <value>(192, 1632)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2451,7 +2494,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1072, 1324)</value>
+      <value>(1064, 1500)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2494,7 +2537,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(544, 1328)</value>
+      <value>(536, 1504)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2964,6 +3007,237 @@
     <param>
       <key>units</key>
       <value>dB</value>
+    </param>
+  </block>
+  <block>
+    <key>qtgui_number_sink</key>
+    <param>
+      <key>autoscale</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>avg</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(760, 1312)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>tab_stat@0:[0,2,2,1]</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>graph_type</key>
+      <value>qtgui.NUM_GRAPH_NONE</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>qtgui_number_sink_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>color1</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor1</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label1</key>
+      <value>Counter</value>
+    </param>
+    <param>
+      <key>unit1</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color10</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor10</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label10</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit10</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color2</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor2</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label2</key>
+      <value>Rate (bps)</value>
+    </param>
+    <param>
+      <key>unit2</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color3</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor3</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label3</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit3</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color4</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor4</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label4</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit4</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color5</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor5</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label5</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit5</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color6</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor6</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label6</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit6</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color7</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor7</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label7</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit7</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color8</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor8</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label8</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit8</key>
+      <value></value>
+    </param>
+    <param>
+      <key>color9</key>
+      <value>("black", "black")</value>
+    </param>
+    <param>
+      <key>factor9</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>label9</key>
+      <value></value>
+    </param>
+    <param>
+      <key>unit9</key>
+      <value></value>
+    </param>
+    <param>
+      <key>max</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>min</key>
+      <value>-1</value>
+    </param>
+    <param>
+      <key>name</key>
+      <value>"Received Frame Counter"</value>
+    </param>
+    <param>
+      <key>nconnections</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>update_time</key>
+      <value>0.10</value>
     </param>
   </block>
   <block>
@@ -4479,6 +4753,12 @@
   </connection>
   <connection>
     <source_block_id>iustsat_synch_detect_tag_1</source_block_id>
+    <sink_block_id>iustsat_tag_counter_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>iustsat_synch_detect_tag_1</source_block_id>
     <sink_block_id>iustsat_zafar_telemetry_frame_extractor_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -4488,6 +4768,18 @@
     <sink_block_id>qtgui_time_sink_x_0_0_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>iustsat_tag_counter_0</source_block_id>
+    <sink_block_id>qtgui_number_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>iustsat_tag_counter_0</source_block_id>
+    <sink_block_id>qtgui_number_sink_0</sink_block_id>
+    <source_key>1</source_key>
+    <sink_key>1</sink_key>
   </connection>
   <connection>
     <source_block_id>iustsat_vt_to_decrypt_0</source_block_id>

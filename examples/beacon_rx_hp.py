@@ -131,6 +131,17 @@ class beacon_rx_hp(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_0.setColumnStretch(c, 1)
+        self.tab_stat = Qt.QTabWidget()
+        self.tab_stat_widget_0 = Qt.QWidget()
+        self.tab_stat_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_stat_widget_0)
+        self.tab_stat_grid_layout_0 = Qt.QGridLayout()
+        self.tab_stat_layout_0.addLayout(self.tab_stat_grid_layout_0)
+        self.tab_stat.addTab(self.tab_stat_widget_0, 'General')
+        self.top_grid_layout.addWidget(self.tab_stat, 3, 0, 1, 1)
+        for r in range(3, 4):
+            self.top_grid_layout.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.top_grid_layout.setColumnStretch(c, 1)
         self.tab_plot = Qt.QTabWidget()
         self.tab_plot_widget_0 = Qt.QWidget()
         self.tab_plot_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_plot_widget_0)
@@ -256,17 +267,6 @@ class beacon_rx_hp(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_0.setColumnStretch(c, 1)
-        self.tab_stat = Qt.QTabWidget()
-        self.tab_stat_widget_0 = Qt.QWidget()
-        self.tab_stat_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_stat_widget_0)
-        self.tab_stat_grid_layout_0 = Qt.QGridLayout()
-        self.tab_stat_layout_0.addLayout(self.tab_stat_grid_layout_0)
-        self.tab_stat.addTab(self.tab_stat_widget_0, 'General')
-        self.top_grid_layout.addWidget(self.tab_stat, 3, 0, 1, 1)
-        for r in range(3, 4):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
         self.root_raised_cosine_filter_0 = filter.fir_filter_fff(rrc_dec, firdes.root_raised_cosine(
         	1, symb_rate*samp_per_symb/rrc_dec, symb_rate, 0.7, 32))
         self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
@@ -357,11 +357,47 @@ class beacon_rx_hp(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_0_0_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_0.pyqwidget(), Qt.QWidget)
         self.tab_plot_grid_layout_2.addWidget(self._qtgui_time_sink_x_0_0_0_0_0_win)
+        self.qtgui_number_sink_0 = qtgui.number_sink(
+            gr.sizeof_float,
+            0,
+            qtgui.NUM_GRAPH_NONE,
+            2
+        )
+        self.qtgui_number_sink_0.set_update_time(0.10)
+        self.qtgui_number_sink_0.set_title("Received Frame Counter")
+
+        labels = ['Counter', 'Rate (bps)', '', '', '',
+                  '', '', '', '', '']
+        units = ['', '', '', '', '',
+                 '', '', '', '', '']
+        colors = [("black", "black"), ("black", "black"), ("black", "black"), ("black", "black"), ("black", "black"),
+                  ("black", "black"), ("black", "black"), ("black", "black"), ("black", "black"), ("black", "black")]
+        factor = [1, 1, 1, 1, 1,
+                  1, 1, 1, 1, 1]
+        for i in xrange(2):
+            self.qtgui_number_sink_0.set_min(i, -1)
+            self.qtgui_number_sink_0.set_max(i, 1)
+            self.qtgui_number_sink_0.set_color(i, colors[i][0], colors[i][1])
+            if len(labels[i]) == 0:
+                self.qtgui_number_sink_0.set_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_number_sink_0.set_label(i, labels[i])
+            self.qtgui_number_sink_0.set_unit(i, units[i])
+            self.qtgui_number_sink_0.set_factor(i, factor[i])
+
+        self.qtgui_number_sink_0.enable_autoscale(False)
+        self._qtgui_number_sink_0_win = sip.wrapinstance(self.qtgui_number_sink_0.pyqwidget(), Qt.QWidget)
+        self.tab_stat_grid_layout_0.addWidget(self._qtgui_number_sink_0_win, 0, 2, 2, 1)
+        for r in range(0, 2):
+            self.tab_stat_grid_layout_0.setRowStretch(r, 1)
+        for c in range(2, 3):
+            self.tab_stat_grid_layout_0.setColumnStretch(c, 1)
         self.low_pass_filter_0 = filter.fir_filter_ccf(first_dec, firdes.low_pass(
         	1, symb_rate*samp_per_symb*first_dec, channel_bw, channel_bw/filt_sharp, firdes.WIN_HAMMING, 6.76))
         self.iustsat_zafar_telemetry_frame_extractor_1 = iustsat.zafar_telemetry_frame_extractor("pkt_len")
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
         self.iustsat_vt_to_decrypt_0 = iustsat.vt_to_decrypt('iv', ([0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xCE, 0xDB, 0xAD, 0xDE, 0xCA, 0xF8, 0x88]), 'aad', 'auth_tag')
+        self.iustsat_tag_counter_0 = iustsat.tag_counter('pkt_len')
         self.iustsat_synch_detect_tag_1 = iustsat.synch_detect_tag(60,'pkt_len',93*2*8)
         self.iustsat_pdu_to_message_0 = iustsat.pdu_to_message('frm_len')
         self.iustsat_pdu_debug_0_0 = iustsat.pdu_debug('auth_tag')
@@ -420,8 +456,11 @@ class beacon_rx_hp(gr.top_block, Qt.QWidget):
         self.connect((self.digital_symbol_sync_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))
         self.connect((self.fir_filter_xxx_0, 0), (self.iustsat_synch_detect_tag_1, 1))
         self.connect((self.iio_fmcomms2_source_0, 0), (self.blocks_tag_gate_0, 0))
+        self.connect((self.iustsat_synch_detect_tag_1, 0), (self.iustsat_tag_counter_0, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.iustsat_zafar_telemetry_frame_extractor_1, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.qtgui_time_sink_x_0_0_0_0_0, 0))
+        self.connect((self.iustsat_tag_counter_0, 0), (self.qtgui_number_sink_0, 0))
+        self.connect((self.iustsat_tag_counter_0, 1), (self.qtgui_number_sink_0, 1))
         self.connect((self.low_pass_filter_0, 0), (self.analog_pll_freqdet_cf_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
         self.connect((self.root_raised_cosine_filter_0, 0), (self.digital_symbol_sync_xx_0, 0))
