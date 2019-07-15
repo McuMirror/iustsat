@@ -753,7 +753,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.5</value>
+      <value>1</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -879,7 +879,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>100</value>
+      <value>1000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1287,7 +1287,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC6_GMSK.bin</value>
+      <value>/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC7_GMSK.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1359,6 +1359,37 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_message_debug</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(952, 1512)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_message_debug_0</value>
     </param>
   </block>
   <block>
@@ -2476,7 +2507,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -4102,7 +4133,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(784, 888)</value>
+      <value>(784, 932)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -4370,7 +4401,7 @@
     </param>
     <param>
       <key>nconnections</key>
-      <value>4</value>
+      <value>1</value>
     </param>
     <param>
       <key>size</key>
@@ -6543,7 +6574,7 @@
     </param>
     <param>
       <key>output_failed</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>prim</key>
@@ -7063,24 +7094,6 @@
   </connection>
   <connection>
     <source_block_id>digital_symbol_sync_xx_0</source_block_id>
-    <sink_block_id>qtgui_time_sink_x_0_0</sink_block_id>
-    <source_key>3</source_key>
-    <sink_key>3</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_symbol_sync_xx_0</source_block_id>
-    <sink_block_id>qtgui_time_sink_x_0_0</sink_block_id>
-    <source_key>2</source_key>
-    <sink_key>2</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_symbol_sync_xx_0</source_block_id>
-    <sink_block_id>qtgui_time_sink_x_0_0</sink_block_id>
-    <source_key>1</source_key>
-    <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_symbol_sync_xx_0</source_block_id>
     <sink_block_id>blocks_multiply_const_vxx_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -7222,6 +7235,12 @@
     <sink_block_id>qtgui_waterfall_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>satellites_decode_rs_general_0</source_block_id>
+    <sink_block_id>blocks_message_debug_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>print_pdu</sink_key>
   </connection>
   <connection>
     <source_block_id>satellites_decode_rs_general_0</source_block_id>

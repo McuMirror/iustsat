@@ -90,6 +90,72 @@
     </param>
   </block>
   <block>
+    <key>variable_qtgui_entry</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>437000000</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(536, 292)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ad9361_lo_freq</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>AD9361 LO Frequency</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>int</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(800, 180)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ad_channel_bw</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>channel_bw*5</value>
+    </param>
+  </block>
+  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -128,7 +194,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 100)</value>
+      <value>(672, 180)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -140,7 +206,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>2600000</value>
+      <value>symb_rate*samp_per_symb/2</value>
     </param>
   </block>
   <block>
@@ -207,6 +273,45 @@
     </param>
   </block>
   <block>
+    <key>variable_qtgui_entry</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>75000</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(984, 164)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>f_if</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>IF Frequency</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>int</value>
+    </param>
+  </block>
+  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -257,7 +362,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>10</value>
+      <value>6</value>
     </param>
   </block>
   <block>
@@ -284,7 +389,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>10</value>
+      <value>4</value>
     </param>
   </block>
   <block>
@@ -338,7 +443,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/iust/Documents/zafar_prj/REC6_GMSK.bin</value>
+      <value>/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC7_GMSK.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -401,7 +506,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 112)</value>
+      <value>(40, 112)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -425,7 +530,7 @@
     </param>
     <param>
       <key>frequency</key>
-      <value>437000000-100000</value>
+      <value>ad9361_lo_freq-(f_if)</value>
     </param>
     <param>
       <key>manual_gain1</key>
@@ -457,7 +562,7 @@
     </param>
     <param>
       <key>bandwidth</key>
-      <value>channel_bw</value>
+      <value>ad_channel_bw</value>
     </param>
     <param>
       <key>rx1_en</key>

@@ -74,7 +74,7 @@ class beacon_rx_hp(gr.top_block, Qt.QWidget):
         self.rate = rate = 2
         self.polys = polys = [109, 79]
         self.k = k = 7
-        self.first_dec = first_dec = 3*10
+        self.first_dec = first_dec = 5*10
         self.channel_bw = channel_bw = symb_rate*samp_per_symb/2
         self.MTU = MTU = 1500
         self.waterfall_per = waterfall_per = 0.1

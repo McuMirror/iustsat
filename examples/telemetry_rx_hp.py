@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Telemetry Rx Gmsk
+# Title: Telemetry Rx Hp
 # GNU Radio version: 3.7.13.4
 ##################################################
 
@@ -40,12 +40,12 @@ import sys
 from gnuradio import qtgui
 
 
-class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
+class telemetry_rx_hp(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Telemetry Rx Gmsk")
+        gr.top_block.__init__(self, "Telemetry Rx Hp")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Telemetry Rx Gmsk")
+        self.setWindowTitle("Telemetry Rx Hp")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -63,7 +63,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "telemetry_rx_gmsk")
+        self.settings = Qt.QSettings("GNU Radio", "telemetry_rx_hp")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
@@ -79,9 +79,9 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.channel_bw = channel_bw = symb_rate*samp_per_symb/2
         self.MTU = MTU = 1500
         self.waterfall_per = waterfall_per = 0.1
-        self.ss_ted_gain_range = ss_ted_gain_range = 1000
+        self.ss_ted_gain_range = ss_ted_gain_range = 100
         self.ss_loopbw_range = ss_loopbw_range = 0.4
-        self.ss_damping_factor_range = ss_damping_factor_range = 1
+        self.ss_damping_factor_range = ss_damping_factor_range = 0.5
         self.source_option = source_option = (1,0)
         self.pll_loopbw_range = pll_loopbw_range = 0.3
         self.gain_before_tr = gain_before_tr = 30
@@ -182,7 +182,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(1, 4):
             self.top_grid_layout.setColumnStretch(c, 1)
-        self._ss_ted_gain_range_range = Range(1, 1000, 1, 1000, 10000)
+        self._ss_ted_gain_range_range = Range(1, 1000, 1, 100, 10000)
         self._ss_ted_gain_range_win = RangeWidget(self._ss_ted_gain_range_range, self.set_ss_ted_gain_range, 'Symbol Sync TED gain', "slider", float)
         self.tab_control_grid_layout_2.addWidget(self._ss_ted_gain_range_win, 1, 0, 1, 4)
         for r in range(1, 2):
@@ -196,7 +196,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_2.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_2.setColumnStretch(c, 1)
-        self._ss_damping_factor_range_range = Range(0.001, 2, 0.001, 1, 10000)
+        self._ss_damping_factor_range_range = Range(0.001, 2, 0.001, 0.5, 10000)
         self._ss_damping_factor_range_win = RangeWidget(self._ss_damping_factor_range_range, self.set_ss_damping_factor_range, 'Symbol Sync DF', "slider", float)
         self.tab_control_grid_layout_2.addWidget(self._ss_damping_factor_range_win, 2, 0, 1, 4)
         for r in range(2, 3):
@@ -266,7 +266,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_control_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_control_grid_layout_0.setColumnStretch(c, 1)
-        self.satellites_decode_rs_general_0 = satellites.decode_rs_general(285, 0, 1, 32, False, True)
+        self.satellites_decode_rs_general_0 = satellites.decode_rs_general(285, 0, 1, 32, False, False)
         self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
         	1024, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -307,202 +307,6 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_plot_grid_layout_0.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_plot_grid_layout_0.setColumnStretch(c, 1)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0 = qtgui.time_sink_f(
-        	203, #size
-        	1, #samp_rate
-        	"GCM-AES Decryptor Out", #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_y_axis(-10, 300)
-
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_trigger_mode(qtgui.TRIG_MODE_TAG, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "frm_len")
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.enable_grid(False)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.enable_control_panel(True)
-        self.qtgui_time_sink_x_0_0_0_0_1_0_0.enable_stem_plot(False)
-
-        if not False:
-          self.qtgui_time_sink_x_0_0_0_0_1_0_0.disable_legend()
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [2, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_0_0_0_1_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_1_0_0.pyqwidget(), Qt.QWidget)
-        self.tab_plot_grid_layout_6.addWidget(self._qtgui_time_sink_x_0_0_0_0_1_0_0_win)
-        self.qtgui_time_sink_x_0_0_0_0_1_0 = qtgui.time_sink_f(
-        	255, #size
-        	1, #samp_rate
-        	"Viterbi Decoder Out", #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0_0_0_1_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0_1_0.set_y_axis(-10, 300)
-
-        self.qtgui_time_sink_x_0_0_0_0_1_0.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_0_0_0_1_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0_0_0_1_0.set_trigger_mode(qtgui.TRIG_MODE_TAG, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "pkt_len")
-        self.qtgui_time_sink_x_0_0_0_0_1_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0_0_0_1_0.enable_grid(False)
-        self.qtgui_time_sink_x_0_0_0_0_1_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0_0_0_1_0.enable_control_panel(True)
-        self.qtgui_time_sink_x_0_0_0_0_1_0.enable_stem_plot(False)
-
-        if not False:
-          self.qtgui_time_sink_x_0_0_0_0_1_0.disable_legend()
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [2, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0_0_0_1_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_0_0_0_1_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_1_0.pyqwidget(), Qt.QWidget)
-        self.tab_plot_grid_layout_4.addWidget(self._qtgui_time_sink_x_0_0_0_0_1_0_win)
-        self.qtgui_time_sink_x_0_0_0_0_1 = qtgui.time_sink_f(
-        	223, #size
-        	1, #samp_rate
-        	"Reed-Solomon Decoder Out", #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0_0_0_1.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0_1.set_y_axis(-10, 300)
-
-        self.qtgui_time_sink_x_0_0_0_0_1.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_0_0_0_1.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0_0_0_1.set_trigger_mode(qtgui.TRIG_MODE_TAG, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "pkt_len")
-        self.qtgui_time_sink_x_0_0_0_0_1.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0_0_0_1.enable_grid(False)
-        self.qtgui_time_sink_x_0_0_0_0_1.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0_0_0_1.enable_control_panel(True)
-        self.qtgui_time_sink_x_0_0_0_0_1.enable_stem_plot(False)
-
-        if not False:
-          self.qtgui_time_sink_x_0_0_0_0_1.disable_legend()
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [2, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0_0_0_1.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0_0_0_1.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0_0_0_1.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0_0_0_1.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0_0_0_1.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0_0_0_1.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0_0_0_1.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_0_0_0_1_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_1.pyqwidget(), Qt.QWidget)
-        self.tab_plot_grid_layout_5.addWidget(self._qtgui_time_sink_x_0_0_0_0_1_win)
-        self.qtgui_time_sink_x_0_0_0_0_0_0 = qtgui.time_sink_f(
-        	4144, #size
-        	symb_rate, #samp_rate
-        	"", #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0_0_0_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.set_y_axis(-1, 2)
-
-        self.qtgui_time_sink_x_0_0_0_0_0_0.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_0_0_0_0_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_TAG, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "pkt_len")
-        self.qtgui_time_sink_x_0_0_0_0_0_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.enable_grid(False)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.enable_control_panel(True)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.enable_stem_plot(False)
-
-        if not False:
-          self.qtgui_time_sink_x_0_0_0_0_0_0.disable_legend()
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [2, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0_0_0_0_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_0_0_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_0_0.pyqwidget(), Qt.QWidget)
-        self.tab_plot_grid_layout_3.addWidget(self._qtgui_time_sink_x_0_0_0_0_0_0_win, 2, 0, 2, 4)
-        for r in range(2, 4):
-            self.tab_plot_grid_layout_3.setRowStretch(r, 1)
-        for c in range(0, 4):
-            self.tab_plot_grid_layout_3.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0_0_0_0_0 = qtgui.time_sink_f(
         	4144, #size
         	symb_rate, #samp_rate
@@ -555,54 +359,6 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_plot_grid_layout_3.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tab_plot_grid_layout_3.setColumnStretch(c, 1)
-        self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-        	1024, #size
-        	symb_rate, #samp_rate
-        	"", #name
-        	1 #number of inputs
-        )
-        self.qtgui_time_sink_x_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0.set_y_axis(-20, 20)
-
-        self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0.enable_grid(False)
-        self.qtgui_time_sink_x_0_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0.enable_control_panel(True)
-        self.qtgui_time_sink_x_0_0.enable_stem_plot(False)
-
-        if not True:
-          self.qtgui_time_sink_x_0_0.disable_legend()
-
-        labels = ['Output', 'T_Avg', 'T_Inst', 'T_Error', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [2, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
-        self.tab_plot_grid_layout_2.addWidget(self._qtgui_time_sink_x_0_0_win)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
         	1024, #size
         	symb_rate*samp_per_symb, #samp_rate
@@ -721,62 +477,15 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
             self.tab_stat_grid_layout_0.setRowStretch(r, 1)
         for c in range(2, 3):
             self.tab_stat_grid_layout_0.setColumnStretch(c, 1)
-        self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
-        	1024, #size
-        	firdes.WIN_BLACKMAN_hARRIS, #wintype
-        	0, #fc
-        	symb_rate*samp_per_symb, #bw
-        	"", #name
-        	1 #number of inputs
-        )
-        self.qtgui_freq_sink_x_0.set_update_time(0.10)
-        self.qtgui_freq_sink_x_0.set_y_axis(-160, 10)
-        self.qtgui_freq_sink_x_0.set_y_label('Relative Gain', 'dB')
-        self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
-        self.qtgui_freq_sink_x_0.enable_autoscale(False)
-        self.qtgui_freq_sink_x_0.enable_grid(False)
-        self.qtgui_freq_sink_x_0.set_fft_average(1.0)
-        self.qtgui_freq_sink_x_0.enable_axis_labels(True)
-        self.qtgui_freq_sink_x_0.enable_control_panel(False)
-
-        if not False:
-          self.qtgui_freq_sink_x_0.disable_legend()
-
-        if "complex" == "float" or "complex" == "msg_float":
-          self.qtgui_freq_sink_x_0.set_plot_pos_half(not True)
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_freq_sink_x_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_freq_sink_x_0.set_line_label(i, labels[i])
-            self.qtgui_freq_sink_x_0.set_line_width(i, widths[i])
-            self.qtgui_freq_sink_x_0.set_line_color(i, colors[i])
-            self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.tab_plot_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 0, 0, 2, 4)
-        for r in range(0, 2):
-            self.tab_plot_grid_layout_0.setRowStretch(r, 1)
-        for c in range(0, 4):
-            self.tab_plot_grid_layout_0.setColumnStretch(c, 1)
         self.low_pass_filter_0 = filter.fir_filter_ccf(sec_dec, firdes.low_pass(
         	1, symb_rate*samp_per_symb*sec_dec, channel_bw, channel_bw/20, firdes.WIN_HAMMING, 6.76))
         self.iustsat_zafar_telemetry_frame_extractor_1 = iustsat.zafar_telemetry_frame_extractor("pkt_len")
         self.iustsat_zafar_telemetry_derand_0 = iustsat.zafar_telemetry_derand("pkt_len")
         self.iustsat_tag_counter_0 = iustsat.tag_counter('pkt_len')
-        self.iustsat_synch_detect_tag_1_0 = iustsat.synch_detect_tag(60,'pkt_len',259*2*8)
         self.iustsat_synch_detect_tag_1 = iustsat.synch_detect_tag(60,'pkt_len',259*2*8)
         self.iustsat_rs_to_decrypt_0_0 = iustsat.rs_to_decrypt('iv', ([0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xCE, 0xDB, 0xAD, 0xDE, 0xCA, 0xF8, 0x88]), 'aad', 'auth_tag')
         self.iustsat_pdu_to_message_0 = iustsat.pdu_to_message('frm_len')
+        self.iustsat_pdu_debug_0_0 = iustsat.pdu_debug('auth_tag')
         self.iustsat_frame_analysis_0 = iustsat.frame_analysis('frm_len')
         self.iio_fmcomms2_source_0 = iio.fmcomms2_source_f32c('192.168.1.10', ad9361_lo_freq-(f_if+doppler), ad_samp_rate, ad_channel_bw, True, False, 0x8000, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
         self.fir_filter_xxx_0 = filter.fir_filter_fff(1, ([1,1,1,-1,1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,-1,-1,-1,1,1,1,1,1,1,1,1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,1,1,-1,1,1,-1,-1,-1,-1,1,-1,1,1,1,-1,1,-1,1,1,1,-1,-1,-1,-1,-1,-1]))
@@ -786,27 +495,21 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.dc_blocker_xx_0 = filter.dc_blocker_ff(65536, True)
         self.crypto_auth_dec_aes_gcm_0_0 = crypto.auth_dec_aes_gcm(([0xFE, 0xFF, 0xE9, 0x92, 0x86, 0x65, 0x73, 0x1C, 0x6D, 0x6A, 0x8F, 0x94, 0x67, 0x30, 0x83, 0x08]), 16, 96)
-        self.blocks_uchar_to_float_1_0 = blocks.uchar_to_float()
-        self.blocks_uchar_to_float_1 = blocks.uchar_to_float()
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
         self.blocks_tag_gate_0 = blocks.tag_gate(gr.sizeof_gr_complex * 1, False)
         self.blocks_tag_gate_0.set_single_key("")
         self.blocks_pdu_to_tagged_stream_0_0_0_1 = blocks.pdu_to_tagged_stream(blocks.float_t, 'frm_len')
         self.blocks_pdu_to_tagged_stream_0_0_0_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'frm_len')
         self.blocks_pdu_to_tagged_stream_0_0_0 = blocks.pdu_to_tagged_stream(blocks.float_t, 'frm_len')
-        self.blocks_pdu_to_tagged_stream_0_0 = blocks.pdu_to_tagged_stream(blocks.byte_t, 'pkt_len')
-        self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.byte_t, 'pkt_len')
         self.blocks_multiply_matrix_xx_0 = blocks.multiply_matrix_cc((source_option,), gr.TPP_ALL_TO_ALL)
         self.blocks_multiply_const_vxx_1 = blocks.multiply_const_vff((0.066666667, ))
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((2, ))
         self.blocks_multiply_const = blocks.multiply_const_vff((gain_before_tr, ))
-        self.blocks_message_debug_0 = blocks.message_debug()
         self.blocks_float_to_uchar_0 = blocks.float_to_uchar()
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC7_GMSK.bin', True)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/ReceivedData/TelemetryReceivedData.bin', False)
-        self.blocks_file_sink_0.set_unbuffered(False)
-        self.blocks_delay_0_0 = blocks.delay(gr.sizeof_float*1, 63)
+        self.blocks_file_sink_0.set_unbuffered(True)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 63)
         self.blocks_add_const_vxx_0 = blocks.add_const_vff((-1, ))
         self.analog_pll_freqdet_cf_0 = analog.pll_freqdet_cf(pll_loopbw_range, 200000*6.28/(ad_samp_rate/sec_dec), -200000*6.28/(ad_samp_rate/sec_dec))
@@ -817,22 +520,19 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.msg_connect((self.crypto_auth_dec_aes_gcm_0_0, 'pdus'), (self.iustsat_frame_analysis_0, 'in'))
+        self.msg_connect((self.crypto_auth_dec_aes_gcm_0_0, 'pdus'), (self.iustsat_pdu_debug_0_0, 'pdu_in'))
         self.msg_connect((self.crypto_auth_dec_aes_gcm_0_0, 'pdus'), (self.iustsat_pdu_to_message_0, 'in'))
         self.msg_connect((self.fec_async_decoder_0, 'out'), (self.iustsat_zafar_telemetry_derand_0, 'in'))
         self.msg_connect((self.iustsat_frame_analysis_0, 'out'), (self.blocks_pdu_to_tagged_stream_0_0_0, 'pdus'))
         self.msg_connect((self.iustsat_frame_analysis_0, 'out'), (self.blocks_pdu_to_tagged_stream_0_0_0_1, 'pdus'))
         self.msg_connect((self.iustsat_pdu_to_message_0, 'out'), (self.blocks_pdu_to_tagged_stream_0_0_0_0, 'pdus'))
         self.msg_connect((self.iustsat_rs_to_decrypt_0_0, 'out'), (self.crypto_auth_dec_aes_gcm_0_0, 'pdus'))
-        self.msg_connect((self.iustsat_zafar_telemetry_derand_0, 'out'), (self.blocks_pdu_to_tagged_stream_0_0, 'pdus'))
         self.msg_connect((self.iustsat_zafar_telemetry_derand_0, 'out'), (self.satellites_decode_rs_general_0, 'in'))
         self.msg_connect((self.iustsat_zafar_telemetry_frame_extractor_1, 'out'), (self.fec_async_decoder_0, 'in'))
-        self.msg_connect((self.satellites_decode_rs_general_0, 'out'), (self.blocks_message_debug_0, 'print_pdu'))
-        self.msg_connect((self.satellites_decode_rs_general_0, 'out'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.satellites_decode_rs_general_0, 'out'), (self.iustsat_rs_to_decrypt_0_0, 'in'))
         self.connect((self.analog_pll_freqdet_cf_0, 0), (self.dc_blocker_xx_0, 0))
         self.connect((self.blocks_add_const_vxx_0, 0), (self.fir_filter_xxx_0, 0))
         self.connect((self.blocks_delay_0, 0), (self.iustsat_synch_detect_tag_1, 0))
-        self.connect((self.blocks_delay_0_0, 0), (self.iustsat_synch_detect_tag_1_0, 0))
         self.connect((self.blocks_file_source_0, 0), (self.blocks_multiply_matrix_xx_0, 1))
         self.connect((self.blocks_float_to_uchar_0, 0), (self.blocks_file_sink_0, 0))
         self.connect((self.blocks_multiply_const, 0), (self.digital_symbol_sync_xx_0, 0))
@@ -840,37 +540,27 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_add_const_vxx_0, 0))
         self.connect((self.blocks_multiply_const_vxx_1, 0), (self.blocks_delay_0, 0))
         self.connect((self.blocks_multiply_matrix_xx_0, 0), (self.low_pass_filter_0, 0))
-        self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.blocks_uchar_to_float_1, 0))
-        self.connect((self.blocks_pdu_to_tagged_stream_0_0, 0), (self.blocks_uchar_to_float_1_0, 0))
         self.connect((self.blocks_pdu_to_tagged_stream_0_0_0, 0), (self.qtgui_number_sink_0_0, 0))
         self.connect((self.blocks_pdu_to_tagged_stream_0_0_0_0, 0), (self.blocks_float_to_uchar_0, 0))
-        self.connect((self.blocks_pdu_to_tagged_stream_0_0_0_0, 0), (self.qtgui_time_sink_x_0_0_0_0_1_0_0, 0))
         self.connect((self.blocks_pdu_to_tagged_stream_0_0_0_1, 0), (self.qtgui_number_sink_0_0, 1))
         self.connect((self.blocks_tag_gate_0, 0), (self.blocks_multiply_matrix_xx_0, 0))
-        self.connect((self.blocks_uchar_to_float_0, 0), (self.blocks_delay_0_0, 0))
         self.connect((self.blocks_uchar_to_float_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.blocks_uchar_to_float_1, 0), (self.qtgui_time_sink_x_0_0_0_0_1, 0))
-        self.connect((self.blocks_uchar_to_float_1_0, 0), (self.qtgui_time_sink_x_0_0_0_0_1_0, 0))
         self.connect((self.dc_blocker_xx_0, 0), (self.blocks_multiply_const, 0))
         self.connect((self.digital_binary_slicer_fb_0, 0), (self.blocks_uchar_to_float_0, 0))
         self.connect((self.digital_symbol_sync_xx_0, 0), (self.blocks_multiply_const_vxx_1, 0))
         self.connect((self.digital_symbol_sync_xx_0, 0), (self.digital_binary_slicer_fb_0, 0))
-        self.connect((self.digital_symbol_sync_xx_0, 0), (self.qtgui_time_sink_x_0_0, 0))
         self.connect((self.fir_filter_xxx_0, 0), (self.iustsat_synch_detect_tag_1, 1))
-        self.connect((self.fir_filter_xxx_0, 0), (self.iustsat_synch_detect_tag_1_0, 1))
         self.connect((self.iio_fmcomms2_source_0, 0), (self.blocks_tag_gate_0, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.iustsat_tag_counter_0, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.iustsat_zafar_telemetry_frame_extractor_1, 0))
         self.connect((self.iustsat_synch_detect_tag_1, 0), (self.qtgui_time_sink_x_0_0_0_0_0, 0))
-        self.connect((self.iustsat_synch_detect_tag_1_0, 0), (self.qtgui_time_sink_x_0_0_0_0_0_0, 0))
         self.connect((self.iustsat_tag_counter_0, 0), (self.qtgui_number_sink_0, 0))
         self.connect((self.iustsat_tag_counter_0, 1), (self.qtgui_number_sink_0, 1))
         self.connect((self.low_pass_filter_0, 0), (self.analog_pll_freqdet_cf_0, 0))
-        self.connect((self.low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "telemetry_rx_gmsk")
+        self.settings = Qt.QSettings("GNU Radio", "telemetry_rx_hp")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -882,11 +572,8 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.set_channel_bw(self.symb_rate*self.samp_per_symb/2)
         self.set_ad_samp_rate(self.symb_rate*self.sec_dec*self.samp_per_symb)
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
-        self.qtgui_time_sink_x_0_0_0_0_0_0.set_samp_rate(self.symb_rate)
         self.qtgui_time_sink_x_0_0_0_0_0.set_samp_rate(self.symb_rate)
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.symb_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.symb_rate*self.samp_per_symb)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/20, firdes.WIN_HAMMING, 6.76))
 
     def get_samp_per_symb(self):
@@ -898,7 +585,6 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.set_ad_samp_rate(self.symb_rate*self.sec_dec*self.samp_per_symb)
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
         self.qtgui_time_sink_x_0.set_samp_rate(self.symb_rate*self.samp_per_symb)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.symb_rate*self.samp_per_symb)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.symb_rate*self.samp_per_symb*self.sec_dec, self.channel_bw, self.channel_bw/20, firdes.WIN_HAMMING, 6.76))
 
     def get_sec_dec(self):
@@ -1041,7 +727,7 @@ class telemetry_rx_gmsk(gr.top_block, Qt.QWidget):
         self.iio_fmcomms2_source_0.set_params(self.ad9361_lo_freq-(self.f_if+self.doppler), self.ad_samp_rate, self.ad_channel_bw, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
 
 
-def main(top_block_cls=telemetry_rx_gmsk, options=None):
+def main(top_block_cls=telemetry_rx_hp, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):

@@ -194,7 +194,7 @@ class telemetry_rx_final(gr.top_block, Qt.QWidget):
             self.tab_grid_layout_1.setRowStretch(r, 1)
         for c in range(1, 2):
             self.tab_grid_layout_1.setColumnStretch(c, 1)
-        self.satellites_decode_rs_general_0 = satellites.decode_rs_general(285, 0, 1, 32, False)
+        self.satellites_decode_rs_general_0 = satellites.decode_rs_general(285, 0, 1, 32, False, True)
         self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
                 interpolation=1,
                 decimation=first_dec,
@@ -700,7 +700,7 @@ class telemetry_rx_final(gr.top_block, Qt.QWidget):
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((2, ))
         self.blocks_moving_average_xx_0 = blocks.moving_average_ff(samp_per_symb, 10, 4000, 1)
         self.blocks_message_debug_0_0 = blocks.message_debug()
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/REC6_GMSK.bin', True)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/iust/Documents/zafar_prj/gr-iustsat/examples/Records/REC7_GMSK.bin', True)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_delay_0_0 = blocks.delay(gr.sizeof_float*1, 63)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 63)
