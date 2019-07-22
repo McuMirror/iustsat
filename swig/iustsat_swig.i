@@ -23,6 +23,8 @@
 #include "iustsat/zafar_telemetry_deinterleave.h"
 #include "iustsat/pack_rsblock.h"
 #include "iustsat/vt_to_decrypt.h"
+#include "iustsat/sliper.h"
+#include "iustsat/desliper.h"
 %}
 
 
@@ -59,3 +61,8 @@ GR_SWIG_BLOCK_MAGIC2(iustsat, pack_rsblock);
 
 %include "iustsat/vt_to_decrypt.h"
 GR_SWIG_BLOCK_MAGIC2(iustsat, vt_to_decrypt);
+
+%include "iustsat/sliper.h"
+GR_SWIG_BLOCK_MAGIC2(iustsat, sliper);
+%include "iustsat/desliper.h"
+GR_SWIG_BLOCK_MAGIC2(iustsat, desliper);

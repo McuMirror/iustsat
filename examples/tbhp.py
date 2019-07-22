@@ -69,23 +69,24 @@ class tbhp(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.tm_symb_rate = tm_symb_rate = 52083
+        self.tm_samp_per_symb = tm_samp_per_symb = 10
+        self.tm_dec1 = tm_dec1 = 6
         self.rate = rate = 2
         self.polys = polys = [109, 79]
         self.k = k = 7
         self.frx_if = frx_if = 75000
         self.bc_symb_rate = bc_symb_rate = 270
-        self.bc_samp_per_symb = bc_samp_per_symb = 80
-        self.adrx_samp_rate = adrx_samp_rate = 520830*6
+        self.bc_samp_per_symb = bc_samp_per_symb = 19.29
+        self.bc_f_if = bc_f_if = 30000
+        self.adrx_samp_rate = adrx_samp_rate = tm_symb_rate*tm_dec1*tm_samp_per_symb
         self.MTU = MTU = 1500
         self.tm_waterfall_per = tm_waterfall_per = 0.1
         self.tm_ss_ted_gain_range = tm_ss_ted_gain_range = 100
-        self.tm_ss_loopbw_range = tm_ss_loopbw_range = 0.4
+        self.tm_ss_loopbw_range = tm_ss_loopbw_range = 0.2
         self.tm_ss_damping_factor_range = tm_ss_damping_factor_range = 0.5
-        self.tm_samp_per_symb = tm_samp_per_symb = 10
         self.tm_pll_loopbw_range = tm_pll_loopbw_range = 0.3
         self.tm_gain_before_tr = tm_gain_before_tr = 30
-        self.tm_dec1 = tm_dec1 = 5
-        self.tm_channel_bw = tm_channel_bw = tm_symb_rate*1.5+frx_if
+        self.tm_channel_bw = tm_channel_bw = tm_symb_rate*3+frx_if
 
 
         self.dec_cc = dec_cc = fec.cc_decoder.make(MTU*8, k, rate, (polys), 0, -1, fec.CC_TERMINATED, False)
@@ -94,13 +95,12 @@ class tbhp(gr.top_block, Qt.QWidget):
         self.bc_ss_ted_gain_range = bc_ss_ted_gain_range = 300
         self.bc_ss_loopbw_range = bc_ss_loopbw_range = 0.2
         self.bc_ss_damping_factor_range = bc_ss_damping_factor_range = 0.5
-        self.bc_rrc_dec = bc_rrc_dec = 10
+        self.bc_rrc_dec = bc_rrc_dec = 15
         self.bc_pll_loopbw_range = bc_pll_loopbw_range = 0.15
         self.bc_gain_before_tr = bc_gain_before_tr = 30
         self.bc_filt_sharp = bc_filt_sharp = 10
-        self.bc_f_if = bc_f_if = 5000
-        self.bc_dec1 = bc_dec1 = 5*10
-        self.bc_channel_bw = bc_channel_bw = bc_symb_rate*bc_samp_per_symb/2
+        self.bc_dec1 = bc_dec1 = 40
+        self.bc_channel_bw = bc_channel_bw = bc_symb_rate*bc_samp_per_symb*3.5+bc_f_if
         self.adrx_channel_bw = adrx_channel_bw = adrx_samp_rate/2
         self.ad9361rx_lo_freq = ad9361rx_lo_freq = 437000000
 
@@ -236,7 +236,7 @@ class tbhp(gr.top_block, Qt.QWidget):
             self.tm_tab_control_grid_layout_2.setRowStretch(r, 1)
         for c in range(0, 4):
             self.tm_tab_control_grid_layout_2.setColumnStretch(c, 1)
-        self._tm_ss_loopbw_range_range = Range(0.001, 2, 0.001, 0.4, 10000)
+        self._tm_ss_loopbw_range_range = Range(0.001, 2, 0.001, 0.2, 10000)
         self._tm_ss_loopbw_range_win = RangeWidget(self._tm_ss_loopbw_range_range, self.set_tm_ss_loopbw_range, 'Symbol Sync LBW', "slider", float)
         self.tm_tab_control_grid_layout_2.addWidget(self._tm_ss_loopbw_range_win, 0, 0, 1, 4)
         for r in range(0, 1):
@@ -478,7 +478,7 @@ class tbhp(gr.top_block, Qt.QWidget):
         	1 #number of inputs
         )
         self.qtgui_time_sink_x_0_0_0_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0_0_0_0.set_y_axis(-1, 2)
+        self.qtgui_time_sink_x_0_0_0_0_0.set_y_axis(-1, 1)
 
         self.qtgui_time_sink_x_0_0_0_0_0.set_y_label('Amplitude', "")
 
@@ -499,7 +499,7 @@ class tbhp(gr.top_block, Qt.QWidget):
                   1, 1, 1, 1, 1]
         colors = ["blue", "red", "green", "black", "cyan",
                   "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
+        styles = [0, 1, 1, 1, 1,
                   1, 1, 1, 1, 1]
         markers = [2, -1, -1, -1, -1,
                    -1, -1, -1, -1, -1]
@@ -582,7 +582,7 @@ class tbhp(gr.top_block, Qt.QWidget):
 
         self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
 
-        self.qtgui_time_sink_x_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0.enable_tags(-1, False)
         self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
         self.qtgui_time_sink_x_0.enable_autoscale(False)
         self.qtgui_time_sink_x_0.enable_grid(False)
@@ -756,7 +756,7 @@ class tbhp(gr.top_block, Qt.QWidget):
         self.fir_filter_xxx_0.declare_sample_delay(0)
         self.fec_async_decoder_0_0 = fec.async_decoder(dec_cc, True, False, MTU)
         self.fec_async_decoder_0 = fec.async_decoder(dec_cc, True, False, MTU)
-        self.digital_symbol_sync_xx_0_0 = digital.symbol_sync_ff(digital.TED_GARDNER, 23.148, bc_ss_loopbw_range, bc_ss_damping_factor_range, bc_ss_ted_gain_range, 2, 1, digital.constellation_bpsk().base(), digital.IR_PFB_NO_MF, 32, ([]))
+        self.digital_symbol_sync_xx_0_0 = digital.symbol_sync_ff(digital.TED_GARDNER, bc_samp_per_symb, bc_ss_loopbw_range, bc_ss_damping_factor_range, bc_ss_ted_gain_range, 2, 1, digital.constellation_bpsk().base(), digital.IR_PFB_NO_MF, 32, ([]))
         self.digital_symbol_sync_xx_0 = digital.symbol_sync_ff(digital.TED_GARDNER, tm_samp_per_symb, tm_ss_loopbw_range, tm_ss_damping_factor_range, tm_ss_ted_gain_range, 2, 1, digital.constellation_bpsk().base(), digital.IR_PFB_NO_MF, 128, ([]))
         self.digital_binary_slicer_fb_0_0 = digital.binary_slicer_fb()
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
@@ -801,7 +801,7 @@ class tbhp(gr.top_block, Qt.QWidget):
         for c in range(0, 4):
             self.bc_tab_control_grid_layout_0.setColumnStretch(c, 1)
         self.band_pass_filter_0 = filter.fir_filter_ccc(1, firdes.complex_band_pass(
-        	1, adrx_samp_rate, 750e3+75e3, 1.25e6+75e3, 50e3, firdes.WIN_HAMMING, 6.76))
+        	1, adrx_samp_rate, 850e3+frx_if, 1.15e6+frx_if, 100e3, firdes.WIN_HAMMING, 6.76))
         self.analog_sig_source_x_0 = analog.sig_source_c(adrx_samp_rate, analog.GR_COS_WAVE, -(1000000+(frx_if-bc_f_if)), 1, 0)
         self.analog_pll_freqdet_cf_0_0 = analog.pll_freqdet_cf(bc_pll_loopbw_range, 20000*6.28/(adrx_samp_rate/bc_dec1), 0*6.28/(adrx_samp_rate/bc_dec1))
         self.analog_pll_freqdet_cf_0 = analog.pll_freqdet_cf(tm_pll_loopbw_range, tm_channel_bw*6.28/(adrx_samp_rate/tm_dec1), -tm_channel_bw*6.28/(adrx_samp_rate/tm_dec1))
@@ -888,8 +888,26 @@ class tbhp(gr.top_block, Qt.QWidget):
 
     def set_tm_symb_rate(self, tm_symb_rate):
         self.tm_symb_rate = tm_symb_rate
-        self.set_tm_channel_bw(self.tm_symb_rate*1.5+self.frx_if)
+        self.set_tm_channel_bw(self.tm_symb_rate*3+self.frx_if)
+        self.set_adrx_samp_rate(self.tm_symb_rate*self.tm_dec1*self.tm_samp_per_symb)
         self.qtgui_time_sink_x_0_0_0_0_0.set_samp_rate(self.tm_symb_rate)
+
+    def get_tm_samp_per_symb(self):
+        return self.tm_samp_per_symb
+
+    def set_tm_samp_per_symb(self, tm_samp_per_symb):
+        self.tm_samp_per_symb = tm_samp_per_symb
+        self.set_adrx_samp_rate(self.tm_symb_rate*self.tm_dec1*self.tm_samp_per_symb)
+
+    def get_tm_dec1(self):
+        return self.tm_dec1
+
+    def set_tm_dec1(self, tm_dec1):
+        self.tm_dec1 = tm_dec1
+        self.set_adrx_samp_rate(self.tm_symb_rate*self.tm_dec1*self.tm_samp_per_symb)
+        self.qtgui_time_sink_x_0.set_samp_rate(self.adrx_samp_rate/self.tm_dec1)
+        self.analog_pll_freqdet_cf_0.set_max_freq(self.tm_channel_bw*6.28/(self.adrx_samp_rate/self.tm_dec1))
+        self.analog_pll_freqdet_cf_0.set_min_freq(-self.tm_channel_bw*6.28/(self.adrx_samp_rate/self.tm_dec1))
 
     def get_rate(self):
         return self.rate
@@ -914,9 +932,10 @@ class tbhp(gr.top_block, Qt.QWidget):
 
     def set_frx_if(self, frx_if):
         self.frx_if = frx_if
-        self.set_tm_channel_bw(self.tm_symb_rate*1.5+self.frx_if)
+        self.set_tm_channel_bw(self.tm_symb_rate*3+self.frx_if)
         Qt.QMetaObject.invokeMethod(self._frx_if_line_edit, "setText", Qt.Q_ARG("QString", str(self.frx_if)))
         self.iio_fmcomms2_source_0.set_params(self.ad9361rx_lo_freq-self.frx_if, self.adrx_samp_rate, self.adrx_channel_bw*5, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
+        self.band_pass_filter_0.set_taps(firdes.complex_band_pass(1, self.adrx_samp_rate, 850e3+self.frx_if, 1.15e6+self.frx_if, 100e3, firdes.WIN_HAMMING, 6.76))
         self.analog_sig_source_x_0.set_frequency(-(1000000+(self.frx_if-self.bc_f_if)))
 
     def get_bc_symb_rate(self):
@@ -924,7 +943,7 @@ class tbhp(gr.top_block, Qt.QWidget):
 
     def set_bc_symb_rate(self, bc_symb_rate):
         self.bc_symb_rate = bc_symb_rate
-        self.set_bc_channel_bw(self.bc_symb_rate*self.bc_samp_per_symb/2)
+        self.set_bc_channel_bw(self.bc_symb_rate*self.bc_samp_per_symb*3.5+self.bc_f_if)
         self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.adrx_samp_rate/self.bc_dec1, self.bc_symb_rate, 0.7, 32))
         self.qtgui_time_sink_x_0_0_0_0_0_0.set_samp_rate(self.bc_symb_rate)
 
@@ -933,7 +952,16 @@ class tbhp(gr.top_block, Qt.QWidget):
 
     def set_bc_samp_per_symb(self, bc_samp_per_symb):
         self.bc_samp_per_symb = bc_samp_per_symb
-        self.set_bc_channel_bw(self.bc_symb_rate*self.bc_samp_per_symb/2)
+        self.set_bc_channel_bw(self.bc_symb_rate*self.bc_samp_per_symb*3.5+self.bc_f_if)
+
+    def get_bc_f_if(self):
+        return self.bc_f_if
+
+    def set_bc_f_if(self, bc_f_if):
+        self.bc_f_if = bc_f_if
+        Qt.QMetaObject.invokeMethod(self._bc_f_if_line_edit, "setText", Qt.Q_ARG("QString", str(self.bc_f_if)))
+        self.set_bc_channel_bw(self.bc_symb_rate*self.bc_samp_per_symb*3.5+self.bc_f_if)
+        self.analog_sig_source_x_0.set_frequency(-(1000000+(self.frx_if-self.bc_f_if)))
 
     def get_adrx_samp_rate(self):
         return self.adrx_samp_rate
@@ -949,7 +977,7 @@ class tbhp(gr.top_block, Qt.QWidget):
         self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.adrx_samp_rate, self.bc_channel_bw, self.bc_channel_bw/self.bc_filt_sharp, firdes.WIN_HAMMING, 6.76))
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.adrx_samp_rate, self.tm_channel_bw, self.tm_channel_bw/20, firdes.WIN_HAMMING, 6.76))
         self.iio_fmcomms2_source_0.set_params(self.ad9361rx_lo_freq-self.frx_if, self.adrx_samp_rate, self.adrx_channel_bw*5, True, True, True, "fast_attack", 64.0, "manual", 64.0, "A_BALANCED", '', True)
-        self.band_pass_filter_0.set_taps(firdes.complex_band_pass(1, self.adrx_samp_rate, 750e3+75e3, 1.25e6+75e3, 50e3, firdes.WIN_HAMMING, 6.76))
+        self.band_pass_filter_0.set_taps(firdes.complex_band_pass(1, self.adrx_samp_rate, 850e3+self.frx_if, 1.15e6+self.frx_if, 100e3, firdes.WIN_HAMMING, 6.76))
         self.analog_sig_source_x_0.set_sampling_freq(self.adrx_samp_rate)
         self.analog_pll_freqdet_cf_0_0.set_max_freq(20000*6.28/(self.adrx_samp_rate/self.bc_dec1))
         self.analog_pll_freqdet_cf_0_0.set_min_freq(0*6.28/(self.adrx_samp_rate/self.bc_dec1))
@@ -991,12 +1019,6 @@ class tbhp(gr.top_block, Qt.QWidget):
         self.tm_ss_damping_factor_range = tm_ss_damping_factor_range
         self.digital_symbol_sync_xx_0.set_damping_factor(self.tm_ss_damping_factor_range)
 
-    def get_tm_samp_per_symb(self):
-        return self.tm_samp_per_symb
-
-    def set_tm_samp_per_symb(self, tm_samp_per_symb):
-        self.tm_samp_per_symb = tm_samp_per_symb
-
     def get_tm_pll_loopbw_range(self):
         return self.tm_pll_loopbw_range
 
@@ -1010,15 +1032,6 @@ class tbhp(gr.top_block, Qt.QWidget):
     def set_tm_gain_before_tr(self, tm_gain_before_tr):
         self.tm_gain_before_tr = tm_gain_before_tr
         self.blocks_multiply_const.set_k((self.tm_gain_before_tr, ))
-
-    def get_tm_dec1(self):
-        return self.tm_dec1
-
-    def set_tm_dec1(self, tm_dec1):
-        self.tm_dec1 = tm_dec1
-        self.qtgui_time_sink_x_0.set_samp_rate(self.adrx_samp_rate/self.tm_dec1)
-        self.analog_pll_freqdet_cf_0.set_max_freq(self.tm_channel_bw*6.28/(self.adrx_samp_rate/self.tm_dec1))
-        self.analog_pll_freqdet_cf_0.set_min_freq(-self.tm_channel_bw*6.28/(self.adrx_samp_rate/self.tm_dec1))
 
     def get_tm_channel_bw(self):
         return self.tm_channel_bw
@@ -1089,14 +1102,6 @@ class tbhp(gr.top_block, Qt.QWidget):
     def set_bc_filt_sharp(self, bc_filt_sharp):
         self.bc_filt_sharp = bc_filt_sharp
         self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.adrx_samp_rate, self.bc_channel_bw, self.bc_channel_bw/self.bc_filt_sharp, firdes.WIN_HAMMING, 6.76))
-
-    def get_bc_f_if(self):
-        return self.bc_f_if
-
-    def set_bc_f_if(self, bc_f_if):
-        self.bc_f_if = bc_f_if
-        Qt.QMetaObject.invokeMethod(self._bc_f_if_line_edit, "setText", Qt.Q_ARG("QString", str(self.bc_f_if)))
-        self.analog_sig_source_x_0.set_frequency(-(1000000+(self.frx_if-self.bc_f_if)))
 
     def get_bc_dec1(self):
         return self.bc_dec1

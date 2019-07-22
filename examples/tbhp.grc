@@ -206,7 +206,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>520830*6</value>
+      <value>tm_symb_rate*tm_dec1*tm_samp_per_symb</value>
     </param>
   </block>
   <block>
@@ -260,7 +260,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(664, 2140)</value>
+      <value>(656, 2140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -272,7 +272,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>bc_symb_rate*bc_samp_per_symb/2</value>
+      <value>bc_symb_rate*bc_samp_per_symb*3.5+bc_f_if</value>
     </param>
   </block>
   <block>
@@ -299,7 +299,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5*10</value>
+      <value>40</value>
     </param>
   </block>
   <block>
@@ -349,7 +349,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5000</value>
+      <value>30000</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -557,7 +557,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>10</value>
+      <value>15</value>
     </param>
   </block>
   <block>
@@ -584,7 +584,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>80</value>
+      <value>19.29</value>
     </param>
   </block>
   <block>
@@ -1144,7 +1144,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(784, 172)</value>
+      <value>(776, 172)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1156,7 +1156,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>tm_symb_rate*1.5+frx_if</value>
+      <value>tm_symb_rate*3+frx_if</value>
     </param>
   </block>
   <block>
@@ -1183,7 +1183,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5</value>
+      <value>6</value>
     </param>
   </block>
   <block>
@@ -1410,7 +1410,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.4</value>
+      <value>0.2</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1803,7 +1803,7 @@
     </param>
     <param>
       <key>high_cutoff_freq</key>
-      <value>1.25e6+75e3</value>
+      <value>1.15e6+frx_if</value>
     </param>
     <param>
       <key>id</key>
@@ -1815,7 +1815,7 @@
     </param>
     <param>
       <key>low_cutoff_freq</key>
-      <value>750e3+75e3</value>
+      <value>850e3+frx_if</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1831,7 +1831,7 @@
     </param>
     <param>
       <key>width</key>
-      <value>50e3</value>
+      <value>100e3</value>
     </param>
     <param>
       <key>win</key>
@@ -2477,7 +2477,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(928, 3540)</value>
+      <value>(840, 3316)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2571,7 +2571,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 3568)</value>
+      <value>(664, 3344)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2627,37 +2627,6 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_message_debug</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1064, 3296)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_message_debug_0</value>
     </param>
   </block>
   <block>
@@ -3225,7 +3194,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(504, 3556)</value>
+      <value>(416, 3332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3632,7 +3601,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(488, 3284)</value>
+      <value>(1136, 3140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4057,7 +4026,7 @@
     </param>
     <param>
       <key>sps</key>
-      <value>23.148</value>
+      <value>bc_samp_per_symb</value>
     </param>
     <param>
       <key>constellation</key>
@@ -4092,7 +4061,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(720, 3148)</value>
+      <value>(392, 3148)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4458,7 +4427,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 3300)</value>
+      <value>(1216, 3276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4528,7 +4497,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(400, 3380)</value>
+      <value>(1120, 3020)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4606,7 +4575,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 3556)</value>
+      <value>(208, 3332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4939,7 +4908,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(136, 3288)</value>
+      <value>(872, 3136)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4990,7 +4959,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(960, 3156)</value>
+      <value>(632, 3156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -5076,7 +5045,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(432, 3160)</value>
+      <value>(104, 3160)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7094,7 +7063,7 @@
     </param>
     <param>
       <key>style1</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>width1</key>
@@ -7378,7 +7347,7 @@
     </param>
     <param>
       <key>ymax</key>
-      <value>2</value>
+      <value>1</value>
     </param>
     <param>
       <key>ymin</key>
